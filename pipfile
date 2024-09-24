@@ -11,6 +11,7 @@ jinja2 = "*"
 python-dotenv = "*"
 
 [dev-packages]
+pipenv = "*"
 
 [requires]
 python_version = "3.9"
