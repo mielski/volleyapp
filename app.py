@@ -11,7 +11,7 @@ bootstrap = Bootstrap5(app)
 
 @app.route('/')
 def hello_world():  # put application's code here
-    return 'Hello World!'
+    return render_template("index.html", title="Hello")
 
 @app.route('/form', methods=["GET", "POST"])
 def test_form():
@@ -20,7 +20,7 @@ def test_form():
         flash("Form validated!")
         return redirect(url_for("hello_world"))
     return render_template("form.html",
-                           form=form)
+                           form=form, title="Form Example")
 
 class HelloForm(flask_wtf.FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(1, 20)])
