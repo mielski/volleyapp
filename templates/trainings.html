@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form, render_field, render_form_row %}
+
+{% block content %}
+
+  <div class="d-sm-flex justify-content-between">
+  <h1 class="col-3 border-1">trainings</h1>
+  <a class="btn btn-outline-primary rounded-4 align-content-center" href={{ url_for('index') }}>New Training</a>
+  </div>
+    <h2>Example Form</h2>
+    <pre>
+class ExampleForm(FlaskForm):
+    date = DateField(description="We'll never share your email with anyone else.")  # add help text with `description`
+    datetime = DateTimeField(render_kw={'placeholder': 'this is a placeholder'})  # add HTML attribute with `render_kw`
+    datetimelocal = DateTimeLocalField()
+    time = TimeField()
+    month = MonthField()
+    color = ColorField()
+    floating = FloatField()
+    integer = IntegerField()
+    decimalslider = DecimalRangeField()
+    integerslider = IntegerRangeField(render_kw={'min': '0', 'max': '4'})
+    email = EmailField()
+    url = URLField()
+    telephone = TelField()
+    image = FileField(render_kw={'class': 'my-class'}, validators=[Regexp('.+\.jpg$')])  # add your class
+    option = RadioField(choices=[('dog', 'Dog'), ('cat', 'Cat'), ('bird', 'Bird'), ('alien', 'Alien')])
+    select = SelectField(choices=[('dog', 'Dog'), ('cat', 'Cat'), ('bird', 'Bird'), ('alien', 'Alien')])
+    selectmulti = SelectMultipleField(choices=[('dog', 'Dog'), ('cat', 'Cat'), ('bird', 'Bird'), ('alien', 'Alien')])
+    bio = TextAreaField()
+    search = SearchField() # will autocapitalize on mobile
+    title = StringField() # will not autocapitalize on mobile
+    secret = PasswordField()
+    remember = BooleanField('Remember me')
+    submit = SubmitField()</pre>
+{#    {{ render_form(example_form) }}#}
+
+    <h2>Render a form with render_form</h2>
+    <pre>{% raw %}{{ render_form(form) }}{% endraw %}</pre>
+    {{ render_form(form) }}
+
+{%  endblock %}

@@ -13,8 +13,17 @@ bootstrap = Bootstrap5(app)
 def index():  # put application's code here
     return render_template("index.html", title="Hello")
 
-@app.route('/form', methods=["GET", "POST"])
-def test_form():
+@app.route('/trainings', methods=["GET", "POST"])
+def trainings():
+    form = HelloForm()
+    if form.validate_on_submit():
+        flash("Form validated!")
+        return redirect(url_for("index"))
+    return render_template("trainings.html",
+                           form=form, title="Trainings")
+
+@app.route('/forms', methods=["GET", "POST"])
+def example_forms():
     form = HelloForm()
     if form.validate_on_submit():
         flash("Form validated!")
