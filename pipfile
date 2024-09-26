@@ -10,6 +10,7 @@ bootstrap-flask = "*"
 jinja2 = "*"
 python-dotenv = "*"
 wtforms = "*"
+pydantic = "*"
 
 [dev-packages]
 pipenv = "*"
