@@ -1,3 +1,7 @@
+import os
+
+import pymongo.database
+from dotenv import load_dotenv
 from flask import Flask, flash, url_for, redirect, render_template
 from flask_bootstrap import Bootstrap5
 import flask_wtf
@@ -5,11 +9,24 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Length
 
 from forms import TrainingForm
+from models import TrainingModel
 
 app = Flask(__name__)
 app.secret_key = 'dev'
 
 bootstrap = Bootstrap5(app)
+
+# setup mongo client and database
+load_dotenv(".")
+from pymongo import MongoClient
+
+client = MongoClient(os.environ["MONGO_SERVER"])
+
+# Create an in-memory MongoDB client
+
+# Access a test database and collection
+# app.db = client['trainings_database']
+# app.db.trainings = app.db['trainings']
 
 @app.route('/')
 def index():  # put application's code here
@@ -20,6 +37,8 @@ def trainings():
     form = HelloForm()
     if form.validate_on_submit():
         flash("Form validated!")
+
+
         return redirect(url_for("index"))
     return render_template("trainings.html",
                            form=form, title="Trainings")
@@ -29,6 +48,8 @@ def create_training():
     form = TrainingForm()
     if form.validate_on_submit():
         flash("Form validated!")
+        training = TrainingModel(**form.data)
+        flash(str(training), category='info')
         return redirect(url_for("trainings"))
     return render_template("training_base.html",
                            form=form, title="Add Training")
