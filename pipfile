@@ -11,9 +11,11 @@ jinja2 = "*"
 python-dotenv = "*"
 wtforms = "*"
 pydantic = "*"
+pymongo = {extras = ["srv"], version = "*"}
 
 [dev-packages]
 pipenv = "*"
+pymongo-inmemory = "*"
 
 [requires]
 python_version = "3.9"
