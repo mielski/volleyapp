@@ -4,6 +4,8 @@ import flask_wtf
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Length
 
+from forms import TrainingForm
+
 app = Flask(__name__)
 app.secret_key = 'dev'
 
@@ -21,7 +23,15 @@ def trainings():
         return redirect(url_for("index"))
     return render_template("trainings.html",
                            form=form, title="Trainings")
-
+@app.route('/trainings/new', methods=["GET", "POST"])
+def create_training():
+    """raises a form to create a new training"""
+    form = TrainingForm()
+    if form.validate_on_submit():
+        flash("Form validated!")
+        return redirect(url_for("trainings"))
+    return render_template("training_base.html",
+                           form=form, title="Add Training")
 @app.route('/forms', methods=["GET", "POST"])
 def example_forms():
     form = HelloForm()
