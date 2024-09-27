@@ -18,6 +18,8 @@ The connection to this server should be stored in the environment variable MONGO
 ### using docker
 
 - install docker for desktop
-- run the command `docker run -p 27017:27017 --name mongo_trainings --pull missing mongo:latest `
+- run the command `docker run -p 27017:27017 --name mongo_trainings --pull missing mongo:latest`
 - set the environment MONGO_SERVER=localhost:27017
 
+Also, in pycharm the configuration [.run/mongo_container.run.xml](.run/mongo_container.run.xml)
+can be used as task before launch so that the container is always restarted automatically.

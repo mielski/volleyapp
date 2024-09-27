@@ -71,4 +71,4 @@ class HelloForm(flask_wtf.FlaskForm):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
