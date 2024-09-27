@@ -20,13 +20,11 @@ bootstrap = Bootstrap5(app)
 load_dotenv(".")
 from pymongo import MongoClient
 
-client = MongoClient(os.environ["MONGO_SERVER"])
-
 # Create an in-memory MongoDB client
 
 # Access a test database and collection
-# app.db = client['trainings_database']
-# app.db.trainings = app.db['trainings']
+app.db = MongoClient(os.environ["MONGO_SERVER"])['trainings_database']
+app.db.trainings = app.db['trainings']
 
 @app.route('/')
 def index():  # put application's code here
@@ -47,9 +45,12 @@ def create_training():
     """raises a form to create a new training"""
     form = TrainingForm()
     if form.validate_on_submit():
-        flash("Form validated!")
         training = TrainingModel(**form.data)
-        flash(str(training), category='info')
+
+        #add training to database
+        training_dict = training.model_dump(by_alias=True)
+        app.db.trainings.insert_one(training_dict)
+
         return redirect(url_for("trainings"))
     return render_template("training_base.html",
                            form=form, title="Add Training")
@@ -70,4 +71,4 @@ class HelloForm(flask_wtf.FlaskForm):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
