@@ -8,16 +8,37 @@
     <a class="btn btn-outline-primary rounded-4 align-content-center" href={{ url_for('create_training') }}>New
       Training</a>
   </div>
-  {% for training in trainings %}
-    <div class="row border">
-      <div class="col-sm">
-        {{ training.training_date.year }}
-      </div>
-      <div class="col-sm">
-        {{ training.title }}
-      </div>
-    </div>
-  {% endfor %}
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Title</th>
+      <th scope="col">Rating</th>
+      <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for training in trainings %}
+      <tr>
+        <th scope="row">
+          <time datetime="{{ training.training_date.date().isoformat() }}">
+            {{ training.training_date.date().isoformat() }}</time>
+        </th>
+        <td>{{ training.title }}</td>
+        <td>*****</td>
+        <td>
+          <div class="d-flex flex-row justify-content-center">
+            <button class="btn btn-primary w-75" href="#">
+              View
+            </button>
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+
+    </tbody>
+  </table>
+
 
 
 {% endblock %}
