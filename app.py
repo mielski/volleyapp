@@ -31,15 +31,14 @@ def index():  # put application's code here
     return render_template("index.html", title="Hello")
 
 @app.route('/trainings', methods=["GET", "POST"])
-def trainings():
-    form = HelloForm()
-    if form.validate_on_submit():
-        flash("Form validated!")
+def view_trainings():
 
+    training_collection = app.db.trainings.find({})
 
-        return redirect(url_for("index"))
+    trainings = [TrainingModel(**training_item) for training_item in training_collection]
+
     return render_template("trainings.html",
-                           form=form, title="Trainings")
+                           trainings=trainings, title="Trainings")
 @app.route('/trainings/new', methods=["GET", "POST"])
 def create_training():
     """raises a form to create a new training"""
@@ -51,7 +50,7 @@ def create_training():
         training_dict = training.model_dump(by_alias=True)
         app.db.trainings.insert_one(training_dict)
 
-        return redirect(url_for("trainings"))
+        return redirect(url_for("view_trainings"))
     return render_template("training_base.html",
                            form=form, title="Add Training")
 @app.route('/forms', methods=["GET", "POST"])
