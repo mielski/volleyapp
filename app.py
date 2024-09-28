@@ -2,13 +2,13 @@ import os
 
 import pymongo.database
 from dotenv import load_dotenv
-from flask import Flask, flash, url_for, redirect, render_template
+from flask import Flask, flash, url_for, redirect, render_template, abort
 from flask_bootstrap import Bootstrap5
 import flask_wtf
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Length
 
-from forms import TrainingForm
+from forms import TrainingForm, TrainingFormDetailed
 from models import TrainingModel
 
 app = Flask(__name__)
@@ -30,7 +30,7 @@ app.db.trainings = app.db['trainings']
 def index():  # put application's code here
     return render_template("index.html", title="Hello")
 
-@app.route('/trainings', methods=["GET", "POST"])
+@app.route('/trainings')
 def view_trainings():
 
     training_collection = app.db.trainings.find({})
@@ -39,6 +39,22 @@ def view_trainings():
 
     return render_template("trainings.html",
                            trainings=trainings, title="Trainings")
+
+@app.route("/training/<string:id_>", methods=["GET","POST"])
+def training_details(id_):
+
+    training_item = app.db.trainings.find_one({"_id": id_})
+    if training_item is None:
+        abort(404, "the requested id does not exist")
+
+    training = TrainingModel(**training_item)
+    form = TrainingFormDetailed.from_model(training)
+    if form.validate_on_submit():
+        return redirect(url_for("view_trainings"))
+
+    return render_template("training_details.html",
+                           training=training, form=form)
+
 @app.route('/trainings/new', methods=["GET", "POST"])
 def create_training():
     """raises a form to create a new training"""
