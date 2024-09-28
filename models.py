@@ -20,7 +20,7 @@ class TrainingModel(BaseModel):
                             description="Tags to identify patterns in the training, for example 'defence'"
                             )
     notes: str = Field(default="", description="Notes/comments made during / after the training")
-    attendees: Optional[PositiveInt] = Field(default=None, description="Number of players that attend the training")
+    attendees: Optional[PositiveInt] = Field(default=None, description="Number of players that attends the training")
 
 
 
