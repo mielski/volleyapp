@@ -1,7 +1,6 @@
 
 
 # High priority todos
-Add more details to training model
 Create extended form for trainings to fill in / view details
 
 ## backlog
