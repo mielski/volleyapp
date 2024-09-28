@@ -8,21 +8,25 @@
     <a class="btn btn-outline-primary rounded-4 align-content-center" href={{ url_for('create_training') }}>New
       Training</a>
   </div>
-  <div class="list-group">
-    {% for training in trainings %}
-      <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
-        <img src="https://cdn4.iconfinder.com/data/icons/evil-icons-user-interface/64/clock-512.png" alt="twbs"
-             width="32" height="32" class="rounded-circle flex-shrink-0">
-        <div class="d-flex w-100 justify-content-between">
-          <div>
-            <h6 class="mb-0">{{ training.title }}</h6>
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-xl-6">
+    <div class="list-group">
+      {% for training in trainings %}
+        <a href="#" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+          <img src="https://cdn4.iconfinder.com/data/icons/evil-icons-user-interface/64/clock-512.png" alt="twbs"
+               width="32" height="32" class="rounded-circle flex-shrink-0">
+          <div class="d-flex w-100 justify-content-between">
+            <div>
+              <h6 class="mb-0">{{ training.title }}</h6>
+            </div>
+            <small class="opacity-50 text-nowrap">
+              <time datetime="{{ training.training_date }}">{{ training.training_date.strftime("%b-%d") }}</time>
+            </small>
           </div>
-          <small class="opacity-50 text-nowrap">
-            <time datetime="{{ training.training_date }}">{{ training.training_date.strftime("%b-%d") }}</time>
-          </small>
-        </div>
-      </a>
-    {% endfor %}
+        </a>
+      {% endfor %}
+    </div>
+    </div>
   </div>
 
 {% endblock %}
