@@ -3,7 +3,11 @@
 
 {% block content %}
 
-    <h3 class="">Training details</h3>
-    {{ render_form(form) }}
-
+    <div class="card card-dark">
+    <div class="d-flex justify-content-between">
+      <h4 class="card-title">{{ training.title }} + {{ training.training_date }}</h4>
+      <h6 class="card-group"> </h6>
+    </div>
+    <p class="card-text">{{ training.description }}</p>
+    </div>
 {% endblock %}

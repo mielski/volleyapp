@@ -41,19 +41,18 @@ def view_trainings():
                            trainings=trainings, title="Trainings")
 
 @app.route("/training/<string:id_>", methods=["GET","POST"])
-def training_details(id_):
+def training_details_view(id_):
+    """endpoint to view the training details in a well formatted html."""
 
+    # load the item
     training_item = app.db.trainings.find_one({"_id": id_})
     if training_item is None:
         abort(404, "the requested id does not exist")
-
     training = TrainingModel(**training_item)
-    form = TrainingFormDetailed.from_model(training)
-    if form.validate_on_submit():
-        return redirect(url_for("view_trainings"))
 
+    # render the item
     return render_template("training_details.html",
-                           training=training, form=form)
+                           training=training, title="View Training")
 
 @app.route('/trainings/new', methods=["GET", "POST"])
 def create_training():
