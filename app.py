@@ -51,7 +51,7 @@ def training_details_view(id_):
     training = TrainingModel(**training_item)
 
     # render the item
-    return render_template("training_details.html",
+    return render_template("training_details_view.html",
                            training=training, title="View Training")
 
 @app.route('/trainings/new', methods=["GET", "POST"])
@@ -66,7 +66,7 @@ def create_training():
         app.db.trainings.insert_one(training_dict)
 
         return redirect(url_for("view_trainings"))
-    return render_template("training_base.html",
+    return render_template("training_new.html",
                            form=form, title="Add Training")
 @app.route('/forms', methods=["GET", "POST"])
 def example_forms():
