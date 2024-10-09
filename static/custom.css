@@ -1,3 +1,7 @@
 .training_card__date {
     color: goldenrod;
 }
+
+.training_card__button {
+    min-width: 100px
+}
