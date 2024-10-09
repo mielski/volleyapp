@@ -10,46 +10,46 @@
       <h4 class="card-subtitle text-opacity-50 training_card__date">{{ training.training_date.date() }}</h4>
     </div>
     <div class="row p-2">
-      <div class="col">
+      <div class="col m-3">
+        <h3 class="card-title">Training goals</h3>
+        <ul>
+          <li>Voeten onder schouders</li>
+          <li>licht gebogen houding aanhouden</li>
+        </ul>
         <p class="card-text text-light-emphasis"> test description</p>
       </div>
-      <div class="col col-sm-2 small">
-        <table class="table table-bordered d-none d-lg-table">
+      <div class="col mx-3 mt-3 small">
+        <table class="table table-bordered d-none d-lg-table mb-1">
           <tbody>
           <tr>
             <td>SV</td>
-            <td>1</td>
-          </tr>
-          <tr>
-            <td>Buiten</td>
-            <td>2</td>
-          </tr>
-          <tr>
-            <td>Mid</td>
-            <td>2</td>
-          </tr>
-          <tr>
+            <td>PL</td>
+            <td>MiD</td>
             <td>Dia</td>
-            <td>2</td>
+            <td>Lib</td>
           </tr>
           <tr>
-            <td>Lib</td>
+            <td>2</td>
+            <td>2</td>
+            <td>2</td>
+            <td>1</td>
             <td>1</td>
           </tr>
           </tbody>
         </table>
+        <em class="small mx-2 d-none d-lg-inline">9 spelers totaal</em>
       </div>
     </div>
     <div class="m-2 d-flex flex-column flex-md-row">
       <button class="btn btn-primary training_card__button p-2 mx-3 my-2 my-md-0" style="">edit</button>
       <button class="btn btn-warning training_card__button p-2 mx-3" href="#">{{ render_icon('trash') }}</button>
-        </div>
     </div>
+  </div>
   </div>
   <h2>warming up</h2>
   <div class="row m-2">
     <div class="col-auto">
     </div>
-  <div class="col-auto border">test</div>
+    <div class="col-auto border">test</div>
   </div>
 {% endblock %}
