@@ -46,71 +46,73 @@
     </div>
   </div>
   <h2 class="my-3">warming up</h2>
-  <div class="row bg-light rounded-top rounded-2">
-    <div class="col text-center p-2"><h3 class="h3 text-primary">2 4 6 8 Service</h3></div>
-  </div>
-  <div class="row p-2">
-    <div class="col-md-3 border align-content-center">
-      <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <svg class="img-fluid" width="auto" height="250"
-                 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Responsive image"
-                 preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-              <rect width="100%" height="100%" fill="#864e96"></rect>
-              <text x="25%" y="50%" fill="#dee2e6" dy=".3em">Responsive image 1</text>
-            </svg>
+  <div class="container-fluid border rounded rounded-2">
+    <div class="row bg-light rounded-top rounded-2">
+      <div class="col text-center p-2"><h3 class="h3 text-primary">2 4 6 8 Service</h3></div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 border align-content-center">
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <svg class="img-fluid" width="auto" height="250"
+                   xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Responsive image"
+                   preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#864e96"></rect>
+                <text x="25%" y="50%" fill="#dee2e6" dy=".3em">Responsive image 1</text>
+              </svg>
+            </div>
+            <div class="carousel-item">
+              <svg class="img-fluid" width="auto" height="250"
+                   xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Responsive image"
+                   preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#868e96"></rect>
+                <text x="25%" y="50%" fill="#dee2e6" dy=".3em">Responsive image 2</text>
+              </svg>
+            </div>
+            <div class="carousel-item">
+              <svg class="img-fluid" width="auto" height="250"
+                   xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Responsive image"
+                   preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                <rect width="100%" height="100%" fill="#868e5e"></rect>
+                <text x="25%" y="50%" fill="#dee2e6" dy=".3em">Responsive image 3</text>
+              </svg>
+            </div>
           </div>
-          <div class="carousel-item">
-            <svg class="img-fluid" width="auto" height="250"
-                 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Responsive image"
-                 preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-              <rect width="100%" height="100%" fill="#868e96"></rect>
-              <text x="25%" y="50%" fill="#dee2e6" dy=".3em">Responsive image 2</text>
-            </svg>
-          </div>
-          <div class="carousel-item">
-            <svg class="img-fluid" width="auto" height="250"
-                 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Responsive image"
-                 preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-              <rect width="100%" height="100%" fill="#868e5e"></rect>
-              <text x="25%" y="50%" fill="#dee2e6" dy=".3em">Responsive image 3</text>
-            </svg>
-          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                  data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                  data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
-                data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
-                data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
       </div>
-    </div>
-    <div class="col">
-      
-      <h4>Opbouw</h4>
-      <ul>
-        <li>1 gooit bal naar 2</li>
-        <li>2 geeft pass op SV 3</li>
-        <li>3 geeft setup naar buiten of mid (4 / 5)</li>
-        <li>Aanval</li>
-      </ul>
-      <p>Spelers lopen achter de bal aan. Na 5x wissel je van helft</p>
-      <h4>Focus</h4>
-      <p>Kijk hierbij goed hoe de aanvaller klaarstaat</p>
-      <div class="d-flex flex-row align-items-center">
-        <p class="mx-2"><b>{{ render_icon('clock') }} </b></p>
-        <p> 15 minuten (van 20:00 tot 20:15)</p>
-      </div>
+      <div class="col">
 
-    </div>
-    <div class="col-sm-2">
-      <h3 class="h5">Notities</h3>
-      <p>Werkte vooral goed met meer dan 6 spelers</p>
+        <h4>Opbouw</h4>
+        <ul>
+          <li>1 gooit bal naar 2</li>
+          <li>2 geeft pass op SV 3</li>
+          <li>3 geeft setup naar buiten of mid (4 / 5)</li>
+          <li>Aanval</li>
+        </ul>
+        <p>Spelers lopen achter de bal aan. Na 5x wissel je van helft</p>
+        <h4>Focus</h4>
+        <p>Kijk hierbij goed hoe de aanvaller klaarstaat</p>
+        <div class="d-flex flex-row align-items-center">
+          <p class="mx-2"><b>{{ render_icon('clock') }} </b></p>
+          <p> 15 minuten (van 20:00 tot 20:15)</p>
+        </div>
+
+      </div>
+      <div class="col-sm-2">
+        <h3 class="h5">Notities</h3>
+        <p>Werkte vooral goed met meer dan 6 spelers</p>
+      </div>
     </div>
   </div>
 
