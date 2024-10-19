@@ -58,6 +58,8 @@ def training_details_edit(id_):
     """endpoint to edit the training details in a well formatted html."""
 
     training_item = app.db.trainings.find_one({"_id": id_})
+    if training_item is None:
+        abort(404, "the requested id does not exist")
 
     form = TrainingFormDetailed(**training_item)
     if form.validate_on_submit():
@@ -68,14 +70,9 @@ def training_details_edit(id_):
         app.db.trainings.update_one({"id_": id_}, training_dict)
         return redirect(url_for("training_details_view", id_=id_))
 
-    # load the item
-    if training_item is None:
-        abort(404, "the requested id does not exist")
-    training = TrainingModel(**training_item)
-
     # render the item
-    return render_template("training_details_view.html",
-                           training=training, title="View Training")
+    return render_template("training_details_edit.html",
+                           form=form, title="Edit Training")
 
 @app.route('/trainings/new', methods=["GET", "POST"])
 def create_training():
@@ -91,20 +88,7 @@ def create_training():
         return redirect(url_for("view_trainings"))
     return render_template("training_new.html",
                            form=form, title="Add Training")
-@app.route('/forms', methods=["GET", "POST"])
-def example_forms():
-    form = HelloForm()
-    if form.validate_on_submit():
-        flash("Form validated!")
-        return redirect(url_for("index"))
-    return render_template("form.html",
-                           form=form, title="Form Example")
 
-class HelloForm(flask_wtf.FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(1, 20)])
-    password = PasswordField('Password', validators=[DataRequired(), Length(8, 150)])
-    remember = BooleanField('Remember me')
-    submit = SubmitField()
 
 
 if __name__ == '__main__':
