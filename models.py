@@ -1,7 +1,7 @@
 """Domain models for the trainings app"""
 import uuid
 from datetime import date, datetime
-from typing import Optional, List
+from typing import Optional, List, Dict
 
 from pydantic import BaseModel, Field, conint, PositiveInt
 
@@ -23,9 +23,34 @@ class TrainingModel(BaseModel):
     attendees: Optional[PositiveInt] = Field(default=None, description="Number of players that attends the training")
 
 
+class ExerciseModel(BaseModel):
+    """Model for the data about an exercise."""
+    id: str = Field(default_factory=lambda: uuid.uuid4().hex, alias="_id")
+    title: str = Field(max_length=100, title="Title of the exercise")
+    duration: int = None
+    approach: str = Field(default="", title="Approach of how the exercise is conducted")
+
+
+    # for later development
+    image_uris: List[str] = Field(default_factory=lambda: dict(),
+                                  description="list of image uris",
+                                  examples=[["https://blobstorage/trainings/image1.png",
+                                             "https://blobstorage/trainings/image2.png"]])
+
 
 if __name__ == '__main__':
 
-    tm1 = TrainingModel(title="Dribbelen voor Dummies", date=date.today())
+    tm1 = TrainingModel(title="Dribbelen voor Dummies", date=date.today(), notes="hey, gaat dit goed?")
     print(tm1)
     print(tm1.model_dump(by_alias=True))
+
+    ex1 = ExerciseModel(title="Service 2 4 5 7 9",
+                        duration=5,
+                        approach="""
+1 ball per 2 players. 1) Player 1 serves the ball at 2 meters from the net towards 
+the second player, which stands at the 7 meter on the other side of the net. The 
+second player catches the ball and rolls is back to player 1. This repeats five times 
+and then the players switch position. 
+After success, repeat with 4 meters, etc.""")
+
+    print(ex1)
