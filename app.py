@@ -2,7 +2,7 @@ import os
 
 import pymongo.database
 from dotenv import load_dotenv
-from flask import Flask, flash, url_for, redirect, render_template, abort
+from flask import Flask, flash, url_for, redirect, render_template, abort, Request, request
 from flask_bootstrap import Bootstrap5
 
 from forms import TrainingForm, TrainingFormDetailed
@@ -50,7 +50,9 @@ def training_details_view(_id):
     # render the item
     return render_template("training_details_view.html",
                            training=training, title="View Training")
-@app.route("/training/<string:_id>/edit", methods=["GET","POST"])
+
+
+@app.route("/training/<string:_id>/edit", methods=["GET","POST", "DELETE"])
 def training_details_edit(_id):
     """endpoint to edit the training details in a well formatted html."""
 
@@ -71,6 +73,20 @@ def training_details_edit(_id):
     # render the item
     return render_template("training_details_edit.html",
                            form=form, title="Edit Training")
+
+
+@app.route("/training/<string:_id>/delete", methods=["POST"])
+def training_details_delete(_id):
+    """endpoint to delete the training."""
+
+    training_item = app.db.trainings.find_one({"_id": _id})
+    if training_item is None:
+        abort(404, "the requested training does not exist")
+
+    flash(f"The training '{training_item.get("title")}' has been deleted")
+    app.db.trainings.delete_one({"_id": _id})
+
+    return redirect(url_for("view_trainings"), code=302)
 
 @app.route('/trainings/new', methods=["GET", "POST"])
 def create_training():

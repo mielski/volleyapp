@@ -1,11 +1,12 @@
 
 
 # High priority todos
-Improve the details page of the training
+- create the trainings database
 
 ## backlog
 
-create blueprint for trainings (versus exercises)
-Add option to remove trainings
-update the training icon
-create special widget for tags
+- Add option to copy a training
+- create flask blueprint for training related pages (versus exercises)
+- create special widget for tags
+- remove the index page
+
