@@ -13,7 +13,7 @@
     <div class="col-lg-8 col-xl-6">
     <div class="list-group">
       {% for training in trainings %}
-        <a href="{{ url_for('training_details_view', id_=training.id) }}" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+        <a href="{{ url_for('training_details_view', _id=training.id) }}" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
           {{ render_icon('fire', color='secondary') }}
           <div class="d-flex w-100 justify-content-between">
             <div>

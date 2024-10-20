@@ -4,9 +4,6 @@ import pymongo.database
 from dotenv import load_dotenv
 from flask import Flask, flash, url_for, redirect, render_template, abort
 from flask_bootstrap import Bootstrap5
-import flask_wtf
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, Length
 
 from forms import TrainingForm, TrainingFormDetailed
 from models import TrainingModel
@@ -40,12 +37,12 @@ def view_trainings():
     return render_template("trainings.html",
                            trainings=trainings, title="Trainings")
 
-@app.route("/training/<string:id_>/view", methods=["GET"])
-def training_details_view(id_):
+@app.route("/training/<string:_id>/view", methods=["GET"])
+def training_details_view(_id):
     """endpoint to view the training details in a well formatted html."""
 
     # load the item
-    training_item = app.db.trainings.find_one({"_id": id_})
+    training_item = app.db.trainings.find_one({"_id": _id})
     if training_item is None:
         abort(404, "the requested id does not exist")
     training = TrainingModel(**training_item)
@@ -53,11 +50,11 @@ def training_details_view(id_):
     # render the item
     return render_template("training_details_view.html",
                            training=training, title="View Training")
-@app.route("/training/<string:id_>/edit", methods=["GET","POST"])
-def training_details_edit(id_):
+@app.route("/training/<string:_id>/edit", methods=["GET","POST"])
+def training_details_edit(_id):
     """endpoint to edit the training details in a well formatted html."""
 
-    training_item = app.db.trainings.find_one({"_id": id_})
+    training_item = app.db.trainings.find_one({"_id": _id})
     if training_item is None:
         abort(404, "the requested id does not exist")
 
@@ -67,8 +64,9 @@ def training_details_edit(id_):
 
         #add training to database
         training_dict = training.model_dump(by_alias=True)
-        app.db.trainings.update_one({"id_": id_}, training_dict)
-        return redirect(url_for("training_details_view", id_=id_))
+        training_dict.pop("_id")
+        app.db.trainings.update_one({"_id": _id}, {"$set": training_dict})
+        return redirect(url_for("training_details_view", _id=_id))
 
     # render the item
     return render_template("training_details_edit.html",

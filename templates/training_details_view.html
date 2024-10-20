@@ -42,7 +42,7 @@
     </div>
     <div class="m-2 d-flex flex-column flex-md-row">
       <a class="btn btn-primary training_card__button p-2 mx-3 my-2 my-md-0"
-              href="{{ url_for('training_details_edit', id_=training.id) }}"
+              href="{{ url_for('training_details_edit', _id=training.id) }}"
               role="button">{{ render_icon('pencil') }}</a>
       <a class="btn btn-warning training_card__button p-2 mx-3" href="https://www.google.nl" role="button">{{ render_icon('trash') }}</a>
     </div>
