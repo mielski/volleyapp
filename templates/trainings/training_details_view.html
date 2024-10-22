@@ -42,9 +42,9 @@
     </div>
     <div class="m-2 d-flex flex-column flex-md-row">
       <a class="btn btn-primary training_card__button p-2 mx-3 my-2 my-md-0"
-         href="{{ url_for('training_details_edit', _id=training.id) }}"
+         href="{{ url_for('trainings.training_details_edit', _id=training.id) }}"
          role="button">{{ render_icon('pencil') }}</a>
-      <form action="{{ url_for('training_details_delete', _id=training.id) }}" method="POST">
+      <form action="{{ url_for('trainings.training_details_delete', _id=training.id) }}" method="POST">
         <button class="btn btn-warning training_card__button p-2 mx-3"
                 type="submit" role="button">{{ render_icon('trash') }}</button>
       </form>
