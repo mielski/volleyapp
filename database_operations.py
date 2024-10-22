@@ -9,7 +9,7 @@ from pymongo.synchronous.collection import Collection
 
 from models import TrainingModel, ExerciseModel
 load_dotenv()
-from app import app
+from main import app
 
 
 # docker run -p 27017:27017 --name mongo_trainings --pull missing mongo:latest

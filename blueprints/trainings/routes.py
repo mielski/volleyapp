@@ -4,7 +4,7 @@ from flask import Blueprint, current_app, render_template, abort, url_for, redir
 
 from forms import TrainingFormDetailed, TrainingForm
 from models import TrainingModel
-from myflask import MyTrainingsApp
+from app import MyTrainingsApp
 
 trainings_bp = Blueprint('trainings', __name__, template_folder="templates")
 
@@ -76,7 +76,7 @@ def create_training():
     """raises a form to create a new training"""
     form = TrainingForm()
     if form.validate_on_submit():
-        training = TrainingModel(**form.data)
+        training = TrainingModel(rating=0, **form.data)
 
         #add training to database
         training_dict = training.model_dump(by_alias=True)
