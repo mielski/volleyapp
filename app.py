@@ -24,8 +24,8 @@ app.db = MongoClient(os.environ["MONGO_SERVER"])['trainings_database']
 app.db.trainings = app.db['trainings']
 
 @app.route('/')
-def index():  # put application's code here
-    return render_template("index.html", title="Hello")
+def index():  # immediate redirect to training
+    return redirect(url_for("view_trainings"))
 
 @app.route('/trainings')
 def view_trainings():
@@ -37,6 +37,11 @@ def view_trainings():
     return render_template("trainings.html",
                            trainings=trainings, title="Trainings")
 
+@app.route('/exercices')
+def view_exercises():
+
+    return render_template("exercises.html",
+                           title="Under construction")
 @app.route("/training/<string:_id>/view", methods=["GET"])
 def training_details_view(_id):
     """endpoint to view the training details in a well formatted html."""

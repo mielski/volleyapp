@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from pymongo import MongoClient
 from pymongo.synchronous.collection import Collection
 
-from models import TrainingModel, Exer
+from models import TrainingModel, ExerciseModel
 load_dotenv()
 from app import app
 
