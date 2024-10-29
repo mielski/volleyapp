@@ -4,7 +4,8 @@ from datetime import date, datetime
 from enum import Enum
 from typing import Optional, List, Dict
 
-from pydantic import BaseModel, Field, conint, PositiveInt, HttpUrl
+from pydantic import BaseModel, Field, conint, PositiveInt, HttpUrl, field_serializer
+from pydantic_core import Url
 
 
 class TrainingModel(BaseModel):
@@ -30,6 +31,7 @@ class DifficultyLevel(str, Enum):
     intermediate = "Intermediate"
     advanced = "Advanced"
 
+
 # Enum for exercise categories
 class ExerciseCategory(str, Enum):
     skill = "Skill"
@@ -37,64 +39,59 @@ class ExerciseCategory(str, Enum):
     tactics = "Tactics"
 
 
+class Skills(str, Enum):
+    Serving = "Serving"
+    ServicePass = "ServicePass"
+    Attacking = "Attacking"
+    Blocking = "Blocking"
+    Defense = "Defense"
+    Footwork = "Footwork"
+
+
+
 # Define the VolleyballExercise model
 class VolleyballExercise(BaseModel):
     """Defines the VolleybalExercise model"""
 
     id: str = Field(default_factory=lambda: uuid.uuid4().hex, alias="_id")
-    name: str
-    description: str
-    approach: str = Field(default="", title="Approach of how the exercise is conducted")
+    title: str
+    approach: str = Field(default="", title="Approach of how the exercise is conducted", examples=[
+        ["player 1 passes to 2, 2 sets to 3, 3 spikes the ball over the net"]])
+    player_roles: List[str] = Field(
+        default_factory=lambda: list(),
+        title="Roles of the players, used in the approach",
+        examples=[["pass back", "setter", "attacker"], ["1", "2", "3"]])
+    # TODO: add roles for extra players, how to make a logical model that works
+    rotation: str = Field(title="Explain how players rotate and when")
     difficulty_level: DifficultyLevel
     duration: conint(ge=0)  # Duration in seconds, must be non-negative
-    reps: Optional[conint(ge=0)] = Field(default=None)  # Optional
-    sets: Optional[conint(ge=0)] = Field(default=None)  # Optional
-    skill_focus: List[str]  # List of skills
+    skill_focus: List[Skills] = Field(default_factory=lambda: list, title="List of volleybal skills that is included",
+                                      )  # List of skills
     equipment: Optional[List[str]] = Field(default=None)  # List of equipment
+    intensity: Optional[int] = Field(default=None, title="Intensity of the training (1=low, 5=high)")
     video_url: Optional[HttpUrl] = Field(default=None)  # Optional, must be a valid URL
-    image_uris: List[HttpUrl] = Field(default_factory=lambda: dict(),
-                                  description="list of image uris",
-                                  examples=["https://blobstorage/trainings/image1.png",
-                                             "https://blobstorage/trainings/image2.png"])  # Optional, must be a valid URL
-    target_heart_rate: Optional[int] = Field(default=None)  # Optional
+    image_uris: List[HttpUrl] = Field(default_factory=lambda: list(),
+                                      description="list of image uris",
+                                      examples=["https://blobstorage/trainings/image1.png",
+                                                "https://blobstorage/trainings/image2.png"])  # Optional, must be a valid URL
     created_at: datetime = Field(default_factory=lambda: datetime.now())  # Automatically set to now
     updated_at: datetime = Field(default_factory=lambda: datetime.now())  # Automatically set to now
     tags: List[str] = Field(default_factory=lambda: list())  # Default to an empty list
-    exercise_variant: Optional[str] = Field(default=None)  # Optional
     related_exercises: Optional[List[str]] = Field(default_factory=lambda: list())  # List of related exercise IDs
 
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "name": "Spiking Drill",
-                "description": "A drill to improve spiking technique.",
-                "approach": "1) Trainer passes ball to Lib.\n2) Lib pass to Set\n3)Set to spiker.\n4) attack",
-                "difficulty_level": "Intermediate",
-                "duration": 300,
-                "reps": 10,
-                "sets": 3,
-                "skill_focus": ["spiking"],
-                "equipment": ["Volleyball"],
-                "calories_burned": 150,
-                "video_url": "https://example.com/video",
-                "image_uris": ["https://example.com/image"],
-                "created_by": "coach123",
-                "tags": ["volleyball", "drill", "spiking"],
-                "exercise_variant": "Jump Spike",
-                "related_exercises": ["exercise_id_1", "exercise_id_2"]
-            }
-        }
 
+    @field_serializer("video_url")
+    def serialize_url(self, value: Optional[Url]) -> Optional[str]:
+        return str(value) if value else None
 
 if __name__ == '__main__':
-
     tm1 = TrainingModel(title="Dribbelen voor Dummies", date=date.today(), notes="hey, gaat dit goed?")
     print(tm1)
     print(tm1.model_dump(by_alias=True))
 
     ex1 = VolleyballExercise(title="Service 2 4 5 7 9",
-                        duration=5,
-                        approach="""
+                             duration=5,
+                             approach="""
 1 ball per 2 players. 1) Player 1 serves the ball at 2 meters from the net towards 
 the second player, which stands at the 7 meter on the other side of the net. The 
 second player catches the ball and rolls is back to player 1. This repeats five times 
