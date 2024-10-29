@@ -41,7 +41,7 @@ def add_some_trainings():
 def add_some_exercises():
 
     exercices_to_add = [
-        VolleyballExercise(
+        dict(
             title="Vlinder - single Passer",
             player_roles=["service", "passer pos 5", "catcher"],
             approach="Controlled serve to passer, passer to catcher at SV position. catcher indicates quality of pass",
@@ -51,7 +51,7 @@ def add_some_exercises():
             duration=10,
             intensity=3,
             ),
-        VolleyballExercise(
+        dict(
             title="Pepper with fixed setter",
             approach="Two attackers 5 meter and Setter. Play ball to setter, setter returns the ball and then "
                      "player A spikes to player B. B passes to Setter and back for spike of B to A, etc. "
@@ -64,10 +64,10 @@ def add_some_exercises():
             video_url="https://www.youtube.com/watch?v=-ZZuo-Yev9E"
         )
     ]
-    for exercise in exercices_to_add:
-        exercises.insert_one(exercise.model_dump(by_alias=True))
-        exercises.insert_one(exercise.model_dump(by_alias=True))
-        exercises.insert_one(exercise.model_dump(by_alias=True))
+    for exercise_data in exercices_to_add:
+        exercises.insert_one(VolleyballExercise(**exercise_data).model_dump(by_alias=True))
+        exercises.insert_one(VolleyballExercise(**exercise_data).model_dump(by_alias=True))
+        exercises.insert_one(VolleyballExercise(**exercise_data).model_dump(by_alias=True))
 
 
 if __name__ == '__main__':

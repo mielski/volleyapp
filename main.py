@@ -9,6 +9,8 @@ from pymongo import MongoClient
 
 from blueprints.trainings.routes import trainings_bp
 from app import MyTrainingsApp
+from forms import VolleyballExerciseForm
+from models import VolleyballExercise
 
 app = MyTrainingsApp(__name__)
 app.secret_key = 'dev'
@@ -19,21 +21,30 @@ bootstrap = Bootstrap5(app)
 load_dotenv(".")
 app.db = MongoClient(os.environ["MONGO_SERVER"])['trainings_database']
 app.db.trainings = app.db['trainings']
+app.db.exercises = app.db['exercises']
 
 app.register_blueprint(trainings_bp)
 
 
 @app.route('/')
 def index():  # immediate redirect to training
-    return redirect(url_for("trainings.view_trainings"))
+    return redirect(url_for("edit_exercise"))
 
-@app.route('/exercices')
+@app.route('/view_exercices')
 def view_exercises():
 
     return render_template("exercises.html",
                            title="Under construction")
 
+@app.route('/exercices')
+def edit_exercise():
 
+    exercise = app.db.exercises.find_one({})
+    exercise = VolleyballExercise(**exercise)
+
+    form = VolleyballExerciseForm.from_exercise(exercise)
+
+    return render_template('exercises/edit.html', exercise=exercise, form=form)
 
 if __name__ == '__main__':
     app.run()
