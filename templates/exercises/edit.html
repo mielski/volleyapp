@@ -1,12 +1,24 @@
 {% extends 'base.html' %}
-{% from 'bootstrap5/form.html' import render_form, render_field, render_form_row %}
+{% from 'bootstrap5/form.html' import render_form, render_field, render_form_row, render_hidden_errors %}
 {% from 'bootstrap5/utils.html' import render_icon %}
 
 
 {% block content %}
 
-  <h3 class="">Exercise edit</h3>
-  <p><small>{{ exercise.id }}</small></p>
+  <h3 class="">Edit Exercise</h3>
+  <form name="edit exercise" method="post" class="p-1 bg-dark-subtle">
+    {{ form.hidden_tag() }}
+    {{ render_hidden_errors(form) }}
+    {{ render_field( form.title) }}
+    <h4>test</h4>
+    <hr>
+    {{ render_form_row([form.approach, form.player_roles], col_map={'player_roles': 'col-lg-3'}) }}
+    {{ render_field( form.rotation) }}
+
+
+  </form>
+
   {{ render_form(form) }}
+
 
 {% endblock %}

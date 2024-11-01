@@ -9,6 +9,25 @@ from wtforms.validators import DataRequired, Length, NumberRange, Optional, URL
 from models import TrainingModel, VolleyballExercise
 
 
+class ListStringField(TextAreaField):
+    """specialized TextAreaField that stored string as elements split by
+    newlines."""
+
+    def process_formdata(self, valuelist):
+        """splits formstring per line and stores elements as data"""
+
+        if valuelist and valuelist[0]:
+
+            self.data = [item.strip() for item in valuelist[0].split("\n")]
+        else:
+            self.data = []
+
+    def _value(self):
+        """set formstring from data elements"""
+
+        return "\n".join(self.data) if self.data else ""
+
+
 class HelloForm(flask_wtf.FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(1, 20)])
     password = PasswordField('Password', validators=[DataRequired(), Length(8, 150)])
@@ -25,12 +44,10 @@ class TrainingForm(flask_wtf.FlaskForm):
 
     @classmethod
     def from_model(cls, training: TrainingModel):
-
         return cls(title=training.title, date=training.training_date)
 
 
 class TrainingFormDetailed(TrainingForm):
-
     description = TextAreaField("Description")
     rating = SelectField("Rating", choices=[0, 1, 2, 3, 4, 5])
     attendees = IntegerField("Number of Players")
@@ -47,14 +64,15 @@ class TrainingFormDetailed(TrainingForm):
             rating=training.rating,
             attendees=training.attendees,
             notes=training.notes
-                   )
+        )
 
 
 class VolleyballExerciseForm(flask_wtf.FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
     approach = TextAreaField("Approach", default="", description="Describe the exercise approach")
-    player_roles = FieldList(StringField("Player Role"), min_entries=3, description="Roles used in the approach",
-                             )
+    player_roles = ListStringField("Player Roles", description="Roles used in the approach",
+                                   default=""
+                                   )
     rotation = TextAreaField("Rotation", validators=[DataRequired()])
     difficulty_level = SelectField("Difficulty Level",
                                    choices=[("easy", "Easy"), ("medium", "Medium"), ("hard", "Hard")],
@@ -63,7 +81,7 @@ class VolleyballExerciseForm(flask_wtf.FlaskForm):
                             description="Non-negative duration in seconds")
 
     skill_focus = SelectMultipleField("Skill Focus", choices=[("spike", "Spike"), ("serve", "Serve"), (
-    "block", "Block")])  # Placeholder choices; replace as needed
+        "block", "Block")])  # Placeholder choices; replace as needed
 
     equipment = FieldList(StringField("Equipment"), description="Equipment required")
 
