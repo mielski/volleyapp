@@ -10,12 +10,14 @@
     {{ form.hidden_tag() }}
     {{ render_hidden_errors(form) }}
     {{ render_field( form.title) }}
-    <h4>test</h4>
-    <hr>
     {{ render_form_row([form.approach, form.player_roles], col_map={'player_roles': 'col-lg-3'}) }}
     {{ render_field( form.rotation) }}
-
-
+    {{ render_form_row([form.difficulty_level, form.skill_focus]) }}
+    <div class="d-flex justify-content-center">
+      <button class="btn btn-primary p-1 m-2 button100px" type="submit" href="#">Ok</button>
+      <button class="btn btn-light p-1 m-2 button100px" type="reset" href="#">Reset</button>
+      <a class="btn btn-light p-1 m-2 button100px" type="reset" href="{{ url_for('trainings.view_trainings') }}">Cancel</a>
+    </div>
   </form>
 
   {{ render_form(form) }}
