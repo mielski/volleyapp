@@ -1,0 +1,47 @@
+{% from 'bootstrap5/nav.html' import render_nav_item %}
+{% from 'bootstrap5/utils.html' import render_messages %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{{ title }}</title>
+  <link rel="icon" href="{{ url_for('static', filename='iconmonstr-tennis-2-32.png') }}">
+  {{ bootstrap.load_css() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
+  <style>
+      pre {
+          background: #ddd;
+          padding: 10px;
+      }
+
+      h2 {
+          margin-top: 20px;
+      }
+
+      footer {
+          margin: 20px;
+      }
+  </style>
+</head>
+<body>
+<main class="container">
+  <p>center:</p>
+  <div class="row m-3 justify-content-center  border border-3">
+    <div class="col-4 bg-secondary minheight d-block"></div>
+    <div class="col-4 bg-secondary minheight d-block"></div>
+  </div>
+  <p>around:</p>
+  <div class="row m-3 justify-content-around border border-3">
+    <div class="col-4 bg-secondary minheight d-block"></div>
+    <div class="col-4 bg-secondary minheight d-block"></div>
+  </div>
+  <p>evenly</p>
+  <div class="row m-3 justify-content-evenly border border-3">
+    <div class="col-4 bg-secondary minheight d-block"></div>
+    <div class="col-4 bg-secondary minheight d-block"></div>
+  </div>
+</main>
+{{ bootstrap.load_js() }}
+</body>
+</html>

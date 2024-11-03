@@ -12,7 +12,7 @@
     {{ render_field( form.title) }}
     {{ render_form_row([form.approach, form.player_roles], col_map={'player_roles': 'col-lg-3'}) }}
     {{ render_field( form.rotation) }}
-    {{ render_form_row([form.difficulty_level, form.skill_focus]) }}
+    {{ render_form_row([form.difficulty_level, form.duration, form.skill_focus]) }}
     <div class="d-flex justify-content-center">
       <button class="btn btn-primary p-1 m-2 button100px" type="submit" href="#">Ok</button>
       <button class="btn btn-light p-1 m-2 button100px" type="reset" href="#">Reset</button>
