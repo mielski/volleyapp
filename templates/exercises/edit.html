@@ -5,22 +5,26 @@
 
 {% block content %}
 
-  <h3 class="">Edit Exercise</h3>
-  <form name="edit exercise" method="post" class="p-1 bg-dark-subtle">
+  <h2 class="mb-3">Edit Exercise</h2>
+
+  <form name="edit exercise" method="post" class="p-2">
     {{ form.hidden_tag() }}
     {{ render_hidden_errors(form) }}
-    {{ render_field( form.title) }}
+    {#    {{ render_field( form.title, form_type='horizontal') }}#}
+    <div class="form-group form-group-lg">
+      {{ form.title(class_="form-control text-center form_title") }}
+    </div>
     {{ render_form_row([form.approach, form.player_roles], col_map={'player_roles': 'col-lg-3'}) }}
     {{ render_field( form.rotation) }}
     {{ render_form_row([form.difficulty_level, form.duration, form.skill_focus]) }}
-    <div class="d-flex justify-content-center">
-      <button class="btn btn-primary p-1 m-2 button100px" type="submit" href="#">Ok</button>
-      <button class="btn btn-light p-1 m-2 button100px" type="reset" href="#">Reset</button>
-      <a class="btn btn-light p-1 m-2 button100px" type="reset" href="{{ url_for('trainings.view_trainings') }}">Cancel</a>
+    <div class="btn-group btn-group-lg border border-1">
+      <button class="btn px-3 btn-success m-2 button100px" type="submit" href="#">Ok</button>
+      <button class="btn px-3 btn-light p-1 m-2" type="reset" href="#">Reset</button>
+      <a class="btn btn-light p-1 m-2 button100px" href="{{ url_for('trainings.view_trainings') }}">Cancel</a>
     </div>
   </form>
 
-  {{ render_form(form) }}
+  {#  {{ render_form(form) }}#}
 
 
 {% endblock %}

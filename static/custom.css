@@ -5,3 +5,8 @@
 .button100px {
     min-width: 100px
 }
+
+.form_title {
+    font-weight: bolder;
+    font-size: 1.5em;
+}
