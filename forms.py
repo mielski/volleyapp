@@ -1,12 +1,11 @@
 import datetime
 
 import flask_wtf
-import wtforms
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, TextAreaField, SelectField, \
     IntegerField, FieldList, SelectMultipleField, URLField, DateTimeLocalField
 from wtforms.validators import DataRequired, Length, NumberRange, Optional, URL
 
-from models import TrainingModel, VolleyballExercise
+from models import TrainingModel, VolleyballExercise, Skills
 
 
 class ListStringField(TextAreaField):
@@ -73,17 +72,16 @@ class VolleyballExerciseForm(flask_wtf.FlaskForm):
     player_roles = ListStringField("Player Roles", description="Roles used in the approach",
                                    default=""
                                    )
-    rotation = TextAreaField("Rotation", validators=[DataRequired()])
     difficulty_level = SelectField("Difficulty Level",
                                    choices=[("easy", "Easy"), ("medium", "Medium"), ("hard", "Hard")],
                                    validators=[DataRequired()])
-    duration = IntegerField("Duration (seconds)", validators=[DataRequired(), NumberRange(min=0)],
-                            description="Non-negative duration in seconds")
 
-    skill_focus = SelectMultipleField("Skill Focus", choices=[("spike", "Spike"), ("serve", "Serve"), (
-        "block", "Block")])  # Placeholder choices; replace as needed
+    duration = StringField("Duration of the exercise", default="15 - 20 minutes",
+                           description="Non-negative duration in minutes")
 
-    equipment = FieldList(StringField("Equipment"), description="Equipment required")
+    skill_focus = SelectMultipleField("Skill Focus",
+                                      choices=[(member, member.value) for member in Skills],
+                                      )  # Placeholder choices; replace as needed
 
     intensity = IntegerField("Intensity", validators=[Optional(), NumberRange(min=1, max=5)],
                              description="1=low, 5=high")
@@ -100,12 +98,9 @@ class VolleyballExerciseForm(flask_wtf.FlaskForm):
         return cls(
             title=exercise.title,
             approach=exercise.approach,
-            player_roles=exercise.player_roles,
-            rotation=exercise.rotation,
             difficulty_level=exercise.difficulty_level.value,
             duration=exercise.duration,
             skill_focus=exercise.skill_focus,
-            equipment=exercise.equipment,
             intensity=exercise.intensity,
             video_url=exercise.video_url,
             image_uris=exercise.image_uris,

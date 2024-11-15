@@ -5,19 +5,22 @@
 
 {% block content %}
 
-  <h2 class="mb-3">Edit Exercise</h2>
+  <h1 class="mb-3">Edit Exercise</h1>
 
-  <form name="edit exercise" method="post" class="p-2">
+  <form name="edit exercise" method="post" class="p-2 ">
     {{ form.hidden_tag() }}
     {{ render_hidden_errors(form) }}
     {#    {{ render_field( form.title, form_type='horizontal') }}#}
-    <div class="form-group form-group-lg">
-      {{ form.title(class_="form-control text-center form_title") }}
+    <div class="form-group form-group-lg mb-3">
+      {{ form.title(class_="form-control text-center form_title text-primary") }}
     </div>
-    {{ render_form_row([form.approach, form.player_roles], col_map={'player_roles': 'col-lg-3'}) }}
-    {{ render_field( form.rotation) }}
+    <div class="form-group my-2">
+      <label class="form-label h5">{{  form.approach.label }}</label>
+      {{ form.approach(class_="form-control", rows=10, cols=2) }}
+    </div>
+
     {{ render_form_row([form.difficulty_level, form.duration, form.skill_focus]) }}
-    <div class="btn-group btn-group-lg border border-1">
+    <div class="btn-group btn-group-lg">
       <button class="btn px-3 btn-success m-2 button100px" type="submit" href="#">Ok</button>
       <button class="btn px-3 btn-light p-1 m-2" type="reset" href="#">Reset</button>
       <a class="btn btn-light p-1 m-2 button100px" href="{{ url_for('trainings.view_trainings') }}">Cancel</a>
@@ -26,5 +29,10 @@
 
   {#  {{ render_form(form) }}#}
 
-
+{#  <script> function reloadPage() {#}
+{#      location.reload();#}
+{#  }#}
+{#  // Set the interval to 500 milliseconds (0.5 seconds)#}
+{#  setInterval(reloadPage, 1000)#}
+{#  </script>#}
 {% endblock %}
