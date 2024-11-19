@@ -62,10 +62,20 @@ def add_some_exercises():
             duration=10,
             skill_focus=[Skills.Defense, Skills.Attacking, Skills.Footwork],
             video_url="https://www.youtube.com/watch?v=-ZZuo-Yev9E"
-        )
+        ),
+        dict(title="Inslaan met afstemming",
+             approach="Doel van deze oefening is dat aanvallers makkelijk tussendoor met de SV\n "
+                      "kunnen terugkoppelen, terwijl de oefening met nieuwe aanvallers doorloopt. <br>"
+                      "rijtje met buiten aanvallers en rijtje met middens / Dias. <br>"
+                      "1. Aangooi op SV<br>"
+                      "2. SV speelt op buiten of midden/achterover.<br>"
+                      "- herhaal zodat beide spelers 3 ballen hebben gekregen",
+             duration=10,
+             skill_focus=[Skills.Attacking],
+             difficulty_level=DifficultyLevel.advanced,
+             )
     ]
     for exercise_data in exercices_to_add:
-        exercises.insert_one(VolleyballExercise(**exercise_data).model_dump(by_alias=True))
         exercises.insert_one(VolleyballExercise(**exercise_data).model_dump(by_alias=True))
         exercises.insert_one(VolleyballExercise(**exercise_data).model_dump(by_alias=True))
 

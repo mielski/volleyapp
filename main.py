@@ -33,8 +33,9 @@ def index():  # immediate redirect to training
 @app.route('/view_exercices')
 def view_exercises():
 
-    return render_template("exercises.html",
-                           title="Under construction")
+    exercises = [VolleyballExercise(**exercise) for exercise in app.db.exercises.find({})]
+    return render_template("exercises/view_exercises.html",
+                           title="Under construction", exercises=exercises)
 
 @app.route('/exercices')
 def edit_exercise():

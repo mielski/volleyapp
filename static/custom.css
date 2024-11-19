@@ -23,6 +23,16 @@ body {
 
 }
 
+.card-nav {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.4s ease;
+}
+
+.card-nav:hover {
+    background-color: cornflowerblue;
+}
+
 .card {
     transition: inherit;
 }
