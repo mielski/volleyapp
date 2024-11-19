@@ -49,9 +49,11 @@
   </div>
 </nav>
 
-<main class="container">
+<main>
+  <div class="container-xxl">
   {{ render_messages(container=False, dismissible=True, dismiss_animate=True) }}
   {% block content %}{% endblock %}
+  </div>
 </main>
 
 <footer class="text-center">
