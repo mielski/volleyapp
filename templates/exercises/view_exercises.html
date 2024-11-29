@@ -19,8 +19,7 @@
     {% for exercise in exercises %}
       <div class="col">
         <div class="card rounded rounded-bottom-4 h-100">
-          <a class="card-nav h-100 d-block" href="#">
-            <div class="card-body d-flex flex-column">
+            <a class="card-body card-nav d-flex flex-column">
               <h5 class="card-title text-primary">{{ exercise.title }}</h5>
               <p class="card-text">{{ exercise.approach }}
               </p>
@@ -41,7 +40,6 @@
 
                 {#              <span class="badge bg-dark mx-1">Defence</span>#}
               </div>
-            </div>
           </a></div>
       </div>
     {% endfor %}
