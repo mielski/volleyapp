@@ -5,7 +5,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateF
     IntegerField, FieldList, SelectMultipleField, URLField, DateTimeLocalField
 from wtforms.validators import DataRequired, Length, NumberRange, Optional, URL
 
-from models import TrainingModel, VolleyballExercise, Skills
+from models import TrainingModel, VolleyballExercise, Skills, DifficultyLevel
 
 
 class ListStringField(TextAreaField):
@@ -67,20 +67,22 @@ class TrainingFormDetailed(TrainingForm):
 
 
 class VolleyballExerciseForm(flask_wtf.FlaskForm):
+    """form used to view and edit volleybal exercises"""
     title = StringField("Title", validators=[DataRequired()])
     approach = TextAreaField("Approach", default="", description="Describe the exercise approach")
     player_roles = ListStringField("Player Roles", description="Roles used in the approach",
                                    default=""
                                    )
     difficulty_level = SelectField("Difficulty Level",
-                                   choices=[("easy", "Easy"), ("medium", "Medium"), ("hard", "Hard")],
+                                   choices=[(member.value, member.value) for member in DifficultyLevel],
+                                   default="Easy",
                                    validators=[DataRequired()])
 
-    duration = StringField("Duration of the exercise", default="15 - 20 minutes",
+    duration = StringField("Duration of the exercise", default="10",
                            description="Non-negative duration in minutes")
 
     skill_focus = SelectMultipleField("Skill Focus",
-                                      choices=[(member, member.value) for member in Skills],
+                                      choices=[(member.value, member.value) for member in Skills],
                                       )  # Placeholder choices; replace as needed
 
     intensity = IntegerField("Intensity", validators=[Optional(), NumberRange(min=1, max=5)],

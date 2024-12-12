@@ -5,9 +5,9 @@
 
 {% block content %}
 
-  <h1 class="mb-3">Edit Exercise</h1>
+  <h1 class="mb-3">New Exercise</h1>
 
-  <form name="edit exercise" method="post" class="p-2 ">
+  <form name="new exercise" method="post" class="p-2 ">
     {{ form.hidden_tag() }}
     {{ render_hidden_errors(form) }}
     <div class="form-group form-group-lg mb-3">
@@ -26,12 +26,4 @@
     </div>
   </form>
 
-  {#  {{ render_form(form) }}#}
-
-{#  <script> function reloadPage() {#}
-{#      location.reload();#}
-{#  }#}
-{#  // Set the interval to 500 milliseconds (0.5 seconds)#}
-{#  setInterval(reloadPage, 1000)#}
-{#  </script>#}
 {% endblock %}

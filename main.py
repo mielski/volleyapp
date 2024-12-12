@@ -47,5 +47,22 @@ def edit_exercise():
 
     return render_template('exercises/edit.html', exercise=exercise, form=form)
 
+@app.route('/new_exercise', methods=["GET", "POST"])
+def new_exercise():
+    """Creates a new exercise and adds it to the database on form submit."""
+
+    form = VolleyballExerciseForm()
+
+    if form.validate_on_submit():
+        exercise = VolleyballExercise(**form.data)
+
+        #add exercise to database
+        exercise_dict = exercise.model_dump(by_alias=True)
+        app.db.exercises.insert_one(exercise_dict)
+        return redirect(url_for("view_exercises"))
+
+    else:
+        return render_template('exercises/new.html', exercise=None, form=form, title="new exercise")
+
 if __name__ == '__main__':
     app.run()

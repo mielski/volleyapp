@@ -82,6 +82,10 @@ class VolleyballExercise(BaseModel):
     def serialize_url(self, value: Optional[Url]) -> Optional[str]:
         return str(value) if value else None
 
+    def new(cls):
+        """create a new, empty training that meets the minimum requirements"""
+
+
 if __name__ == '__main__':
     tm1 = TrainingModel(title="Dribbelen voor Dummies", date=date.today(), notes="hey, gaat dit goed?")
     print(tm1)
