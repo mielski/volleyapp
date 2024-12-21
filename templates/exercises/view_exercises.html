@@ -3,17 +3,10 @@
 
 {% block content %}
 
-  <h1 class="d-block py-2">Exercises</h1>
-  <div class="row my-3 p-2 bg-body">
-    <div class="col-md-6"></div>
-    <div class="col">
-      <label for="input_search">{{ render_icon('search', color='secondary') }}</label>
-      <input id='input_search' class="form-text" type="text" disabled>
-    </div>
-    <div class="col align-center"><a class="btn btn-outline-primary rounded-4 align-content-center"
-                                     href='{{ url_for("new_exercise") }}'>
-      New Exercise</a>
-    </div>
+  <div class="d-sm-flex justify-content-between mb-3">
+  <h1 class="col-3 border-1">Exercises</h1>
+  <a class="btn btn-outline-primary rounded-4 align-content-center" href={{ url_for('new_exercise') }}>New
+    Exercise</a>
   </div>
   <div class="row row-cols-1 row-cols-xxl-3 row-cols-lg-2 g-3">
     {% for exercise in exercises %}
