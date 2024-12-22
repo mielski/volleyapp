@@ -13,8 +13,8 @@
     <div class="form-group form-group-lg mb-3">
       {{ form.title(class_="form-control text-center form_title text-primary") }}
     </div>
-    <div class="form-group my-2">
-      <label class="form-label h5">{{  form.approach.label }}</label>
+    <div class="form-group my-2" id="div-for-approach">
+      <label class="form-label h5" for="approach">{{  form.approach.label }}</label>
       {{ form.approach(class_="form-control", rows=10, cols=2) }}
     </div>
 
@@ -28,10 +28,6 @@
 
   {#  {{ render_form(form) }}#}
 
-{#  <script> function reloadPage() {#}
-{#      location.reload();#}
-{#  }#}
-{#  // Set the interval to 500 milliseconds (0.5 seconds)#}
-{#  setInterval(reloadPage, 1000)#}
-{#  </script>#}
+  <script src="{{ url_for('static', filename='js/script.js') }}">
+  </script>
 {% endblock %}

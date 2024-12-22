@@ -57,11 +57,6 @@ class VolleyballExercise(BaseModel):
     title: str
     approach: str = Field(default="", title="Approach of how the exercise is conducted", examples=[
         ["player 1 passes to 2, 2 sets to 3, 3 spikes the ball over the net"]])
-    player_roles: List[str] = Field(
-        default_factory=lambda: list(),
-        title="Roles of the players, used in the approach,, this is still under development",
-        examples=[["pass back", "setter", "attacker"], ["1", "2", "3"]])
-    # TODO: add roles for extra players, how to make a logical model that works
     difficulty_level: DifficultyLevel
     duration: conint(ge=0)  # Duration in seconds, must be non-negative
     skill_focus: List[Skills] = Field(default_factory=lambda: list, title="List of volleybal skills that is included",
