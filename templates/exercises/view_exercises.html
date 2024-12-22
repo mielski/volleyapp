@@ -12,7 +12,7 @@
     {% for exercise in exercises %}
       <div class="col">
         <div class="card rounded rounded-bottom-4 h-100">
-            <a class="card-body card-nav d-flex flex-column">
+            <a class="card-body card-nav d-flex flex-column" href="{{ url_for('edit_exercise', _id=exercise.id) }}">
               <h5 class="card-title text-primary">{{ exercise.title }}</h5>
               <p class="card-text">{{ exercise.approach }}
               </p>
