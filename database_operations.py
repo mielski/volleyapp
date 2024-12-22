@@ -43,7 +43,7 @@ def add_some_exercises():
     exercices_to_add = [
         dict(
             title="Vlinder - single Passer",
-            approach="Controlled serve to passer, passer to catcher at SV position. catcher indicates quality of pass",
+            approach="Controlled serve to <i>passer</i>, passer to catcher at SV position. catcher indicates quality of pass",
             rotation="Players move to next position after 10 successful serves",
             difficulty_level=DifficultyLevel.beginner,
             skill_focus=[Skills.Serving, Skills.Defense],
