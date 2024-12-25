@@ -20,8 +20,12 @@ def delete_all():
 
 
 def fetch_all():
+    """pretty print the data in the database"""
+    print("Trainings")
     for entry in trainings.find({}):
-        print(entry)
+        pprint(entry)
+    print("")
+    print("Exercises")
     for entry in exercises.find({}):
         pprint(entry)
 
@@ -29,10 +33,11 @@ def fetch_all():
 def add_some_trainings():
     """Adds two trainings to the trainings collection"""
 
-    tm1 = TrainingModel(title="Passing - houding voeten", date="2024-09-20", rating=1,
+    tm1 = TrainingModel(title="Passing - houding voeten", date="2024-12-16", rating=1,
                         description="Doel: oefenen op het klaarstaan voor de bal met juiste houding voetenwerk.")
-    tm2 = TrainingModel(title="Passing - beweging naar bal", date="2024-09-27", rating=1,
-                        description="Doel: oefenen op balbaanbehoordeling en achter de bal komen")
+    tm2 = TrainingModel(title="Passing - beweging naar bal", date="2024-12-09", rating=1,
+                        description="Doel: oefenen op balbaanbehoordeling en achter de bal komen",
+                        )
 
     trainings.insert_one(tm1.model_dump(by_alias=True))
     trainings.insert_one(tm2.model_dump(by_alias=True))
@@ -79,9 +84,20 @@ def add_some_exercises():
         exercises.insert_one(VolleyballExercise(**exercise_data).model_dump(by_alias=True))
 
 
+def add_exercises_to_first_training():
+    """add exercise 0 and 2 to the first training"""
+    training_id = trainings.find_one()["_id"]
+    exercises_ids = [v["_id"] for v in exercises.find({}, {"_id": 1})]
+    ids_to_add = exercises_ids[0], exercises_ids[2]
+    trainings.update_one({"_id": training_id}, {"$push": {"exercises": {"$each": ids_to_add}}})
+
 if __name__ == '__main__':
 
     delete_all()
     add_some_trainings()
     add_some_exercises()
+    # link exercises to the first training
+
+    add_exercises_to_first_training()
+
     fetch_all()

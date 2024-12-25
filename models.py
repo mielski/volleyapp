@@ -21,6 +21,8 @@ class TrainingModel(BaseModel):
     tags: List[str] = Field(default_factory=lambda: list(),
                             description="Tags to identify patterns in the training, for example 'defence'"
                             )
+    exercises: List[str] = Field(default_factory=lambda: list(),
+                                 description="list of exercises in the training, ordered by appearance")
     notes: str = Field(default="", description="Notes/comments made during / after the training")
     attendees: Optional[PositiveInt] = Field(default=None, description="Number of players that attends the training")
 
