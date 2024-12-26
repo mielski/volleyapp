@@ -27,17 +27,29 @@ app.register_blueprint(trainings_bp)
 
 
 @app.route('/')
-def index():  # immediate redirect to training
-    return redirect(url_for("view_exercises"))
+def index():  # immediate redirect to view
+
+    exercise = app.db.exercises.find_one()
+
+    return redirect(url_for("view_exercise", _id=exercise["_id"]))
 
 @app.route('/view_exercices')
-def view_exercises():
+def view_all_exercises():
 
     exercises = [VolleyballExercise(**exercise) for exercise in app.db.exercises.find({})]
     return render_template("exercises/view_exercises.html",
                            title="View Exercises", exercises=exercises)
 
+
 @app.route('/exercices/<string:_id>/view')
+def view_exercise(_id):
+
+    exercise = app.db.exercises.find_one({"_id": _id})
+    exercise = VolleyballExercise(**exercise)
+
+    return render_template('exercises/view.html', exercise=exercise)
+
+@app.route('/exercices/<string:_id>/edit')
 def edit_exercise(_id):
 
     exercise = app.db.exercises.find_one({"_id": _id})
@@ -59,7 +71,7 @@ def new_exercise():
         #add exercise to database
         exercise_dict = exercise.model_dump(by_alias=True)
         app.db.exercises.insert_one(exercise_dict)
-        return redirect(url_for("view_exercises"))
+        return redirect(url_for("view_all_exercises"))
 
     else:
         return render_template('exercises/new.html', exercise=None, form=form, title="new exercise")
