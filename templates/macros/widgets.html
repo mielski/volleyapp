@@ -1,0 +1,12 @@
+{% macro render_difficulty_view(exercise) %}
+  {% set difficulty_level = ["Beginner", "Intermediate", "Advanced"].index(exercise.difficulty_level.value) %}
+  <div class="difficulty_container">
+  {% for i in range(3) %}
+    {% if i <= difficulty_level %}
+      <i class="fa-solid fa-star"></i>
+    {% else %}
+      <i class="fa-regular fa-star"></i>
+    {% endif %}
+  {% endfor %}
+  </div>
+{% endmacro %}

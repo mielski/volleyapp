@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'macros/widgets.html' import render_difficulty_view %}
 
 {% block content %}
   <div>
@@ -11,7 +12,7 @@
     <div class="row">
       <div class="col col-md-3">
         <h5><i class="fa fa-bolt"></i><span class="mx-2">Difficulty</span></h5>
-        <p>{{ exercise.difficulty_level.value }}</p>
+        {{ render_difficulty_view(exercise) }}
       </div>
       <div class="col col-md-3">
         <h5><i class="fa-regular fa-hourglass-half"></i><span class="mx-2">Duration</span></h5>

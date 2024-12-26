@@ -46,3 +46,8 @@ body {
 .card {
     transition: inherit;
 }
+
+.difficulty_container {
+    display: flex;
+
+}

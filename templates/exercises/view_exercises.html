@@ -21,22 +21,10 @@
                 {% for skill_focus in exercise.skill_focus %}
                   <span class="badge bg-dark">{{ skill_focus.value }}</span>
                 {% endfor %}
-
-
-                {#              <span class="badge bg-dark mx-1">Defence</span>#}
               </div>
           </a></div>
       </div>
     {% endfor %}
-
-
-    {#    <script> function reloadPage() {#}
-    {#        location.reload();#}
-    {#    }#}
-    {##}
-    {#    // Set the interval to 500 milliseconds (0.5 seconds)#}
-    {#    setInterval(reloadPage, 1000)#}
-    {#    </script>#}
   </div>
 
 {% endblock %}
