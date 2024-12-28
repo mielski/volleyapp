@@ -12,6 +12,7 @@ python-dotenv = "*"
 wtforms = "*"
 pydantic = "*"
 pymongo = {extras = ["srv"], version = "*"}
+pytest = "*"
 
 [dev-packages]
 pipenv = "*"

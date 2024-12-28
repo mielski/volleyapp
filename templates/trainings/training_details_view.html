@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% from 'bootstrap5/form.html' import render_form, render_field, render_form_row %}
 {% from 'bootstrap5/utils.html' import render_icon %}
-
+{% from 'macros/blocks.html' import render_exercise %}
 {% block content %}
 
   <div class="card card-dark m-2">
@@ -50,6 +50,9 @@
       </form>
     </div>
   </div>
+  {% for exercise in exercises %}
+    {{ render_exercise(exercise) }}
+  {% endfor %}
   <h2 class="my-3">warming up</h2>
   <div class="container-fluid border rounded rounded-2">
     <div class="row bg-light rounded-top rounded-2">

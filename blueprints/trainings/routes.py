@@ -3,12 +3,18 @@ from typing import cast
 from flask import Blueprint, current_app, render_template, abort, url_for, redirect, flash
 
 from forms import TrainingFormDetailed, TrainingForm
-from models import TrainingModel
+from models import TrainingModel, VolleyballExercise
 from app import MyTrainingsApp
 
 trainings_bp = Blueprint('trainings', __name__, template_folder="templates")
 
 app = cast(MyTrainingsApp, current_app)
+
+
+def load_exercises(training: TrainingModel) -> list[VolleyballExercise]:
+
+    exercise_ids = training.exercises
+    return [VolleyballExercise(**app.db.exercises.find_one(id_)) for id_ in exercise_ids]
 
 @trainings_bp.route('/trainings')
 def view_trainings():
@@ -16,9 +22,8 @@ def view_trainings():
     training_collection = app.db.trainings.find({})
 
     trainings = [TrainingModel(**training_item) for training_item in training_collection]
-
     return render_template("trainings/trainings.html",
-                           trainings=trainings, title="Trainings")
+                           trainings=trainings)
 @trainings_bp.route("/training/<string:_id>/view", methods=["GET"])
 def training_details_view(_id):
     """endpoint to view the training details in a well formatted html."""
@@ -28,10 +33,14 @@ def training_details_view(_id):
     if training_item is None:
         abort(404, "the requested id does not exist")
     training = TrainingModel(**training_item)
+    exercises = load_exercises(training)
+
+    # load the exercises used in the training
+
 
     # render the item
     return render_template("trainings/training_details_view.html",
-                           training=training, title="View Training")
+                           training=training, exercises=exercises)
 
 
 @trainings_bp.route("/training/<string:_id>/edit", methods=["GET", "POST", "DELETE"])

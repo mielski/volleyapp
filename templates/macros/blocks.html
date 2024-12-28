@@ -1,0 +1,40 @@
+{% from 'macros/widgets.html' import render_difficulty_view %}
+
+{% macro render_exercise(exercise) %}
+  <div>
+    <div class="row row-gap-2">
+      <h1 class="text-primary my-3">{{ exercise.title }}</h1>
+
+      <h5>Approach</h5>
+      <p> {{ exercise.approach }}</p>
+    </div>
+    <div class="row">
+      <div class="col col-md-3">
+        <h5><i class="fa fa-bolt"></i><span class="mx-2">Difficulty</span></h5>
+        {{ render_difficulty_view(exercise) }}
+      </div>
+      <div class="col col-md-3">
+        <h5><i class="fa-regular fa-hourglass-half"></i><span class="mx-2">Duration</span></h5>
+        <p>{{ exercise.duration }} minutes</p>
+      </div>
+      <div class="col col-3">
+        <h5><i class="fa-solid fa-bullseye"></i></i><span class="mx-2">Skill Focus</span></h5>
+        {% for skill in exercise.skill_focus %}
+          <span class="badge bg-dark">{{ skill.value }}</span>
+        {% endfor %}
+      </div>
+      <div class="row">
+        <div class="col col-6">>
+          <svg class="bd-placeholder-img img-thumbnail" width="400" height="300" xmlns="http://www.w3.org/2000/svg"
+               role="img"
+               aria-label="A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera: 200x200"
+               preserveAspectRatio="xMidYMid slice" focusable="false"><title>A generic square placeholder image with a
+            white border around it, making it resemble a photograph taken with an old instant camera</title>
+            <rect width="100%" height="100%" fill="#868e96"></rect>
+            <text x="50%" y="50%" fill="#dee2e6" dy=".3em" dx="-2em">300x200</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endmacro %}

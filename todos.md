@@ -1,20 +1,21 @@
 
 # In progress
+- load exercises in training overview
 
 # High priority todos
-- create new exercise
-- ability to edit an exercise
-- ability to add exercises to a training
-
+- create special widget for skills and autofill in form
+- ability to add exercise to a training
 
 ## backlog
 
 - Add option to copy a training
-- create special widget for tags
+- use js to reduce number of get/post (feature)
 - add some nice transitions to the widgets
-- link exercises to a training
 - have variations to a training based on number of players\
   - update the model
   - update the view
   - update the form
-
+- deployment
+  - configure a webserver
+  - have a env link to mongodb server
+  - optionally, storage for images (later)

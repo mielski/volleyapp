@@ -48,6 +48,8 @@ def view_exercise(_id):
     exercise = app.db.exercises.find_one({"_id": _id})
     exercise = VolleyballExercise(**exercise)
 
+
+
     return render_template('exercises/view.html', exercise=exercise)
 
 @app.route('/exercices/<string:_id>/edit', methods=["GET", "POST"])
