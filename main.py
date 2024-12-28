@@ -1,3 +1,4 @@
+import logging
 import os
 
 import pymongo.database
@@ -49,15 +50,24 @@ def view_exercise(_id):
 
     return render_template('exercises/view.html', exercise=exercise)
 
-@app.route('/exercices/<string:_id>/edit')
+@app.route('/exercices/<string:_id>/edit', methods=["GET", "POST"])
 def edit_exercise(_id):
 
-    exercise = app.db.exercises.find_one({"_id": _id})
-    exercise = VolleyballExercise(**exercise)
+    form = VolleyballExerciseForm()
 
-    form = VolleyballExerciseForm.from_exercise(exercise)
+    if form.validate_on_submit():
+        # ran when post method is successful -> update data about exercise from form data
+        exercise = VolleyballExercise(**form.data)
+        exercise_dict = exercise.model_dump(by_alias=True)
+        exercise_dict.pop("_id")
+        app.db.exercises.update_one({"_id": _id}, {"$set": exercise_dict})
+        return redirect(url_for("view_all_exercises"))
 
-    return render_template('exercises/edit.html', exercise=exercise, form=form)
+    else:
+        exercise = app.db.exercises.find_one({"_id": _id})
+        exercise = VolleyballExercise(**exercise)
+        form = VolleyballExerciseForm.from_exercise(exercise)
+        return render_template('exercises/edit.html', exercise=exercise, form=form)
 
 @app.route('/new_exercise', methods=["GET", "POST"])
 def new_exercise():
@@ -77,4 +87,5 @@ def new_exercise():
         return render_template('exercises/new.html', exercise=None, form=form, title="new exercise")
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     app.run()
