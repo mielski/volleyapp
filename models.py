@@ -50,9 +50,8 @@ class Skills(str, Enum):
     Footwork = "Footwork"
 
 
-
-# Define the VolleyballExercise model
-class VolleyballExercise(BaseModel):
+# Define the ExerciseModel
+class ExerciseModel(BaseModel):
     """Defines the VolleybalExercise model"""
 
     id: str = Field(default_factory=lambda: uuid.uuid4().hex, alias="_id")
@@ -88,9 +87,9 @@ if __name__ == '__main__':
     print(tm1)
     print(tm1.model_dump(by_alias=True))
 
-    ex1 = VolleyballExercise(title="Service 2 4 5 7 9",
-                             duration=5,
-                             approach="""
+    ex1 = ExerciseModel(title="Service 2 4 5 7 9",
+                        duration=5,
+                        approach="""
 1 ball per 2 players. 1) Player 1 serves the ball at 2 meters from the net towards 
 the second player, which stands at the 7 meter on the other side of the net. The 
 second player catches the ball and rolls is back to player 1. This repeats five times 

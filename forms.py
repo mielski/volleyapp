@@ -5,7 +5,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateF
     IntegerField, FieldList, SelectMultipleField, URLField, DateTimeLocalField
 from wtforms.validators import DataRequired, Length, NumberRange, Optional, URL
 
-from models import TrainingModel, VolleyballExercise, Skills, DifficultyLevel
+from models import TrainingModel, ExerciseModel, Skills, DifficultyLevel
 
 
 class ListStringField(TextAreaField):
@@ -96,7 +96,7 @@ class VolleyballExerciseForm(flask_wtf.FlaskForm):
 
     # related_exercises = FieldList(StringField("Related Exercise ID"), description="IDs of related exercises")
     @classmethod
-    def from_exercise(cls, exercise: VolleyballExercise):
+    def from_exercise(cls, exercise: ExerciseModel):
         return cls(
             title=exercise.title,
             approach=exercise.approach,

@@ -3,7 +3,7 @@ from typing import cast
 from flask import Blueprint, current_app, render_template, abort, url_for, redirect, flash
 
 from forms import TrainingFormDetailed, TrainingForm
-from models import TrainingModel, VolleyballExercise
+from models import TrainingModel, ExerciseModel
 from app import MyTrainingsApp
 
 trainings_bp = Blueprint('trainings', __name__, template_folder="templates")
@@ -11,10 +11,10 @@ trainings_bp = Blueprint('trainings', __name__, template_folder="templates")
 app = cast(MyTrainingsApp, current_app)
 
 
-def load_exercises(training: TrainingModel) -> list[VolleyballExercise]:
+def load_exercises(training: TrainingModel) -> list[ExerciseModel]:
 
     exercise_ids = training.exercises
-    return [VolleyballExercise(**app.db.exercises.find_one(id_)) for id_ in exercise_ids]
+    return [ExerciseModel(**app.db.exercises.find_one(id_)) for id_ in exercise_ids]
 
 
 def get_training_data(_id) -> dict:

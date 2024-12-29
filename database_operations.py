@@ -3,7 +3,7 @@ from pprint import pprint
 from dotenv import load_dotenv
 from pymongo.synchronous.collection import Collection
 
-from models import TrainingModel, VolleyballExercise, DifficultyLevel, Skills
+from models import TrainingModel, ExerciseModel, DifficultyLevel, Skills
 
 load_dotenv()
 from main import app
@@ -80,8 +80,8 @@ def add_some_exercises():
              )
     ]
     for exercise_data in exercices_to_add:
-        exercises.insert_one(VolleyballExercise(**exercise_data).model_dump(by_alias=True))
-        exercises.insert_one(VolleyballExercise(**exercise_data).model_dump(by_alias=True))
+        exercises.insert_one(ExerciseModel(**exercise_data).model_dump(by_alias=True))
+        exercises.insert_one(ExerciseModel(**exercise_data).model_dump(by_alias=True))
 
 
 def add_exercises_to_first_training():

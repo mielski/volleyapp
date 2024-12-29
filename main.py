@@ -11,7 +11,7 @@ from pymongo import MongoClient
 from blueprints.trainings.routes import trainings_bp
 from app import MyTrainingsApp
 from forms import VolleyballExerciseForm
-from models import VolleyballExercise
+from models import ExerciseModel
 
 app = MyTrainingsApp(__name__)
 app.secret_key = 'dev'
@@ -46,7 +46,7 @@ def index():  # immediate redirect to view
 @app.route('/view_exercices')
 def view_all_exercises():
 
-    exercises = [VolleyballExercise(**exercise) for exercise in app.db.exercises.find({})]
+    exercises = [ExerciseModel(**exercise) for exercise in app.db.exercises.find({})]
     return render_template("exercises/view_exercises.html",
                            title="View Exercises", exercises=exercises)
 
@@ -55,7 +55,7 @@ def view_all_exercises():
 def view_exercise(_id):
 
     exercise_data = get_exercise_data(_id)
-    exercise = VolleyballExercise(**exercise_data)
+    exercise = ExerciseModel(**exercise_data)
 
     return render_template('exercises/view.html', exercise=exercise)
 
@@ -66,7 +66,7 @@ def edit_exercise(_id):
 
     if form.validate_on_submit():
         # ran when post method is successful -> update data about exercise from form data
-        exercise = VolleyballExercise(**form.data)
+        exercise = ExerciseModel(**form.data)
         exercise_dict = exercise.model_dump(by_alias=True)
         exercise_dict.pop("_id")
         app.db.exercises.update_one({"_id": _id}, {"$set": exercise_dict})
@@ -74,7 +74,7 @@ def edit_exercise(_id):
 
     else:
         exercise_data = get_exercise_data(_id)
-        exercise = VolleyballExercise(**exercise_data)
+        exercise = ExerciseModel(**exercise_data)
         form = VolleyballExerciseForm.from_exercise(exercise)
         return render_template('exercises/edit.html', exercise=exercise, form=form)
 
@@ -85,7 +85,7 @@ def new_exercise():
     form = VolleyballExerciseForm()
 
     if form.validate_on_submit():
-        exercise = VolleyballExercise(**form.data)
+        exercise = ExerciseModel(**form.data)
 
         # add exercise to database
         exercise_dict = exercise.model_dump(by_alias=True)
