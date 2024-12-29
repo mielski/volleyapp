@@ -16,6 +16,16 @@ def load_exercises(training: TrainingModel) -> list[VolleyballExercise]:
     exercise_ids = training.exercises
     return [VolleyballExercise(**app.db.exercises.find_one(id_)) for id_ in exercise_ids]
 
+
+def get_training_data(_id) -> dict:
+    """Loads data from id and returns abort if the id cannot be found.
+
+    This will at some point become a function related to database operations."""
+    training_data = app.db.trainings.find_one({"_id": _id})
+    if training_data is None:
+        abort(404, "the requested id does not exist")
+    return training_data
+
 @trainings_bp.route('/trainings')
 def view_trainings():
 
@@ -29,10 +39,8 @@ def training_details_view(_id):
     """endpoint to view the training details in a well formatted html."""
 
     # load the item
-    training_item = app.db.trainings.find_one({"_id": _id})
-    if training_item is None:
-        abort(404, "the requested id does not exist")
-    training = TrainingModel(**training_item)
+    training_data = get_training_data(_id)
+    training = TrainingModel(**training_data)
     exercises = load_exercises(training)
 
     # load the exercises used in the training
@@ -47,11 +55,9 @@ def training_details_view(_id):
 def training_details_edit(_id):
     """endpoint to edit the training details in a well formatted html."""
 
-    training_item = app.db.trainings.find_one({"_id": _id})
-    if training_item is None:
-        abort(404, "the requested id does not exist")
+    training = get_training_data(_id)
 
-    form = TrainingFormDetailed(**training_item)
+    form = TrainingFormDetailed(**training)
     if form.validate_on_submit():
         training = TrainingModel(**form.data)
 
@@ -64,6 +70,8 @@ def training_details_edit(_id):
     # render the item
     return render_template("trainings/training_details_edit.html",
                            form=form, title="Edit Training")
+
+
 
 
 @trainings_bp.route("/training/<string:_id>/delete", methods=["POST"])

@@ -27,6 +27,15 @@ app.db.exercises = app.db['exercises']
 app.register_blueprint(trainings_bp)
 
 
+def get_exercise_data(_id) -> dict:
+    """Loads exercise dictionary from database returns abort if the id cannot be found.
+
+    This will at some point become a function related to database operations."""
+    exercise_data = app.db.exercises.find_one({"_id": _id})
+    if exercise_data is None:
+        abort(404, "the requested exercise id does not exist")
+    return exercise_data
+
 @app.route('/')
 def index():  # immediate redirect to view
 
@@ -45,10 +54,8 @@ def view_all_exercises():
 @app.route('/exercices/<string:_id>/view')
 def view_exercise(_id):
 
-    exercise = app.db.exercises.find_one({"_id": _id})
-    exercise = VolleyballExercise(**exercise)
-
-
+    exercise_data = get_exercise_data(_id)
+    exercise = VolleyballExercise(**exercise_data)
 
     return render_template('exercises/view.html', exercise=exercise)
 
@@ -66,8 +73,8 @@ def edit_exercise(_id):
         return redirect(url_for("view_all_exercises"))
 
     else:
-        exercise = app.db.exercises.find_one({"_id": _id})
-        exercise = VolleyballExercise(**exercise)
+        exercise_data = get_exercise_data(_id)
+        exercise = VolleyballExercise(**exercise_data)
         form = VolleyballExerciseForm.from_exercise(exercise)
         return render_template('exercises/edit.html', exercise=exercise, form=form)
 
@@ -80,13 +87,14 @@ def new_exercise():
     if form.validate_on_submit():
         exercise = VolleyballExercise(**form.data)
 
-        #add exercise to database
+        # add exercise to database
         exercise_dict = exercise.model_dump(by_alias=True)
         app.db.exercises.insert_one(exercise_dict)
         return redirect(url_for("view_all_exercises"))
 
     else:
         return render_template('exercises/new.html', exercise=None, form=form, title="new exercise")
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
