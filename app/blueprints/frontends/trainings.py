@@ -1,3 +1,8 @@
+"""
+Routes for the trainings frontend, such as viewing all the trainings.
+
+These endpoints rely on the trainings templates.
+"""
 from typing import cast
 
 from flask import Blueprint, current_app, render_template, abort, url_for, redirect, flash

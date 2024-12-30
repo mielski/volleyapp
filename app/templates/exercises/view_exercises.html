@@ -5,14 +5,14 @@
 
   <div class="d-sm-flex justify-content-between mb-3">
   <h1 class="col-3 border-1">Exercises</h1>
-  <a class="btn btn-outline-primary rounded-4 align-content-center" href={{ url_for('new_exercise') }}>New
+  <a class="btn btn-outline-primary rounded-4 align-content-center" href={{ url_for('exercises.new_exercise') }}>New
     Exercise</a>
   </div>
   <div class="row row-cols-1 row-cols-xxl-3 row-cols-lg-2 g-3">
     {% for exercise in exercises %}
       <div class="col">
         <div class="card rounded rounded-bottom-4 h-100">
-            <a class="card-body card-nav d-flex flex-column" href="{{ url_for('view_exercise', _id=exercise.id) }}">
+            <a class="card-body card-nav d-flex flex-column" href="{{ url_for('exercises.view_exercise', _id=exercise.id) }}">
               <h5 class="card-title text-primary">{{ exercise.title }}</h5>
               <p class="card-text">{{ exercise.approach }}
               </p>
