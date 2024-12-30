@@ -2,9 +2,9 @@ from typing import cast
 
 from flask import Blueprint, current_app, render_template, abort, url_for, redirect, flash
 
-from forms import TrainingFormDetailed, TrainingForm
-from models import TrainingModel, ExerciseModel
-from app import MyTrainingsApp
+from app.forms import TrainingFormDetailed, TrainingForm
+from app.models import TrainingModel, ExerciseModel
+from app.training_app import MyTrainingsApp
 
 trainings_bp = Blueprint('trainings', __name__, template_folder="templates")
 

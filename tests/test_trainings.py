@@ -5,9 +5,9 @@ import pytest
 from dotenv import load_dotenv
 from pymongo.synchronous.collection import Collection
 
-import blueprints.trainings.routes
-from blueprints.trainings.routes import load_exercises
-from models import TrainingModel
+import app.blueprints.trainings.routes
+from app.blueprints.trainings import load_exercises
+from app.models import TrainingModel
 
 load_dotenv()
 from main import app

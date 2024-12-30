@@ -5,7 +5,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateF
     IntegerField, FieldList, SelectMultipleField, URLField, DateTimeLocalField
 from wtforms.validators import DataRequired, Length, NumberRange, Optional, URL
 
-from models import TrainingModel, ExerciseModel, Skills, DifficultyLevel
+from .models import TrainingModel, ExerciseModel, Skills, DifficultyLevel
 
 
 class ListStringField(TextAreaField):

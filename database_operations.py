@@ -3,10 +3,11 @@ from pprint import pprint
 from dotenv import load_dotenv
 from pymongo.synchronous.collection import Collection
 
-from models import TrainingModel, ExerciseModel, DifficultyLevel, Skills
+from app import create_app
+from app.models import TrainingModel, ExerciseModel, DifficultyLevel, Skills
 
 load_dotenv()
-from main import app
+app = create_app()
 
 
 # docker run -p 27017:27017 --name mongo_trainings --pull missing mongo:latest
