@@ -1,14 +1,15 @@
 import os
 
 from dotenv import load_dotenv
-from flask import redirect, url_for
+from flask import redirect, url_for, jsonify
 from flask_bootstrap import Bootstrap5
 from pymongo import MongoClient
 
 from app.blueprints.frontends.trainings import trainings_bp
 from app.blueprints.frontends.exercises import exercises_bp
 from app.training_app import MyTrainingsApp
-
+from blueprints.backends.exercises_api import exercises_api_bp
+from errors import InvalidPayload
 
 
 def create_app():
@@ -22,9 +23,12 @@ def create_app():
     app.db.exercises = app.db['exercises']
 
 
-    # Register blueprints
+    # Register frontend blueprints
     app.register_blueprint(trainings_bp)
     app.register_blueprint(exercises_bp)
+
+    #register backend blueprints
+    app.register_blueprint(exercises_api_bp)
 
     bootstrap = Bootstrap5(app)
 
@@ -36,6 +40,6 @@ def create_app():
         for rule in app.url_map.iter_rules():
             print(f"{rule.endpoint}: {rule}")
         return redirect(url_for("exercises.view_all_exercises"))
-        return "Hello world"
+
 
     return app

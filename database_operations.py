@@ -1,19 +1,20 @@
+import os
 from pprint import pprint
 
 from dotenv import load_dotenv
+from pymongo import MongoClient
 from pymongo.synchronous.collection import Collection
 
-from app import create_app
 from app.models import TrainingModel, ExerciseModel, DifficultyLevel, Skills
 
 load_dotenv()
-app = create_app()
 
 
+db = MongoClient(os.environ["MONGO_SERVER"])['trainings_database']
 # docker run -p 27017:27017 --name mongo_trainings --pull missing mongo:latest
 
-trainings: Collection = app.db.trainings
-exercises: Collection = app.db.exercises
+trainings: Collection = db.trainings
+exercises: Collection = db.exercises
 
 def delete_all():
     trainings.delete_many({})

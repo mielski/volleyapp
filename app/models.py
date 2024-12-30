@@ -60,7 +60,7 @@ class ExerciseModel(BaseModel):
         ["player 1 passes to 2, 2 sets to 3, 3 spikes the ball over the net"]])
     difficulty_level: DifficultyLevel
     duration: conint(ge=0)  # Duration in seconds, must be non-negative
-    skill_focus: List[Skills] = Field(default_factory=lambda: list, title="List of volleybal skills that is included",
+    skill_focus: List[Skills] = Field(default_factory=lambda: list(), title="List of volleybal skills that is included",
                                       )  # List of skills
     intensity: Optional[int] = Field(default=None, title="Intensity of the training (1=low, 5=high)")
     video_url: Optional[HttpUrl] = Field(default=None)  # Optional, must be a valid URL
