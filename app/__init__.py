@@ -9,6 +9,7 @@ from app.blueprints.frontends.trainings import trainings_bp
 from app.blueprints.frontends.exercises import exercises_bp
 from app.training_app import MyTrainingsApp
 from blueprints.backends.exercises_api import exercises_api_bp
+from blueprints.backends.operations_api import actions_api_bp
 from errors import InvalidPayload
 
 
@@ -29,6 +30,7 @@ def create_app():
 
     #register backend blueprints
     app.register_blueprint(exercises_api_bp)
+    app.register_blueprint(actions_api_bp)
 
     bootstrap = Bootstrap5(app)
 
