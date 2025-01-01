@@ -3,6 +3,7 @@
 import datetime
 import json
 import unittest.mock
+from http import HTTPStatus
 from pprint import pprint
 
 import pytest
@@ -49,17 +50,30 @@ def client(app_dict):
 
     database_operations.delete_all()
 
+@pytest.fixture()
+def item_ids(app_dict):
+    """returns a dictionary of all ids of the exercises and trainings loaded into the db"""
+
+    db = app_dict["db"]
+
+    return {"exercises": [v["_id"] for v in db.exercises.find({})],
+            "trainings": [v["_id"] for v in db.trainings.find({})]
+            }
+
 
 def test_create_exercise(client):
 
     data = {"title": "Hello World", "duration": 10, "difficulty_level": "Beginner"}
     response = client.post('/api/exercises/', json=data, headers={"Content-Type": "Application/json"})
 
-    pprint(json.loads(response.text))
-    pprint(response.status_code)
-    pprint(response.status)
+    assert response.status_code == HTTPStatus.CREATED
+    assert response.json["acknowledged"] is True
 
 
-def test_read_exercises(client):
+def test_read_exercises(client, item_ids):
 
+    print(item_ids)
     response = client.get('/api/exercises/')
+    assert response.status_code == HTTPStatus.OK
+
+
