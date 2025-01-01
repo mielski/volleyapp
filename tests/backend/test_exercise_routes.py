@@ -60,7 +60,6 @@ def item_ids(app_dict):
             "trainings": [v["_id"] for v in db.trainings.find({})]
             }
 
-
 def test_create_exercise(client):
 
     data = {"title": "Hello World", "duration": 10, "difficulty_level": "Beginner"}
@@ -70,10 +69,36 @@ def test_create_exercise(client):
     assert response.json["acknowledged"] is True
 
 
+def test_read_exercise(client, item_ids):
+    """tests the read exercise api."""
+
+    exercise_id = item_ids["exercises"][0]
+    response = client.get(f'api/exercises/{exercise_id}/', headers={"Content-Type": "Application/json"})
+
+    assert response.status_code == HTTPStatus.OK, "status 200 expected for read exercise"
+    assert response.json["_id"] == exercise_id, "id of the returned exercise should match the requested one"
+
+
+def test_read_exercise(client, item_ids):
+    """tests the read exercise api."""
+
+    exercise_id = item_ids["exercises"][0]
+    response = client.get(f'api/exercises/{exercise_id}/', headers={"Content-Type": "Application/json"})
+
+    assert response.status_code == HTTPStatus.OK, "status 200 expected for read exercise"
+    assert response.json["_id"] == exercise_id, "id of the returned exercise should match the requested one"
+
+def test_read_exercise_wrong_id(client, item_ids):
+    """tests the read exercise api if the id is not existing."""
+
+    response = client.get(f'api/exercises/wrong_id_endpoint/', headers={"Content-Type": "Application/json"})
+
+    assert response.status_code == HTTPStatus.NOT_FOUND, "status 404 expected for read exercise with wrong id"
+    assert response.json["message"] == "The requested resource for id 'wrong_id_endpoint' was not found."
+
+
 def test_read_exercises(client, item_ids):
 
-    print(item_ids)
     response = client.get('/api/exercises/')
     assert response.status_code == HTTPStatus.OK
-
 
