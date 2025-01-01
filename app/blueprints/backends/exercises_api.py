@@ -93,4 +93,4 @@ def delete_exercise(_id):
     if result.deleted_count == 0:
         abort(HTTPStatus.NOT_FOUND, _id)
 
-    return jsonify(message="exercise removed succesfully", acknowlegded=result.acknowledged), HTTPStatus.OK
+    return jsonify(message="Exercise deleted successfully.", acknowlegded=result.acknowledged), HTTPStatus.OK
