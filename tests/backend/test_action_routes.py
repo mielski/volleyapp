@@ -74,7 +74,7 @@ def test_action(client, app_dict, item_ids):
     training_pre = TrainingModel(**db.trainings.find_one({"_id": training_id}))
 
     response = client.post(f'api/actions/{training_id}/',
-                           json=action.json(),
+                           json=action.model_dump(),
                            headers={"Content-Type": "Application/json"})
 
 

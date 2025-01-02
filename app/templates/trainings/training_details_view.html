@@ -50,20 +50,20 @@
       </form>
     </div>
   </div>
-
+  <div class="exercise-container">
   {% for exercise in exercises %}
-    <hr>
-    <div class="row m-2" data-exercise-id="{{ exercise.id }}">
+    <div class="row m-2 exercise" data-exercise-id="{{ exercise.id }}">
+      <hr>
       <div class="col-11">{{ render_exercise(exercise) }}</div>
       <div class="col-1 d-flex flex-column justify-content-center">
-        <button class="btn btn-outline-primary m-2"><i class="fa-solid fa-edit"></i></button>
-        <button class="btn btn-outline-dark m-2"><i class="fa-solid fa-arrow-up"></i></button>
-        <button class="btn btn-outline-dark m-2"><i class="fa-solid fa-arrow-down"></i></button>
+        <button class="btn btn-outline-primary m-2 button-edit"><i class="fa-solid fa-edit"></i></button>
+        <button class="btn btn-outline-dark m-2 button-move-up"><i class="fa-solid fa-arrow-up"></i></button>
+        <button class="btn btn-outline-dark m-2 button-move-down"><i class="fa-solid fa-arrow-down"></i></button>
         <button class="btn btn-outline-danger m-2"><i class="fa-solid fa-trash"></i></button>
       </div>
     </div>
   {% endfor %}
-
+  </div>
   <h2 class="my-3">warming up</h2>
   <div class="container-fluid border rounded rounded-2">
     <div class="row bg-light rounded-top rounded-2">
@@ -134,5 +134,5 @@
       </div>
     </div>
   </div>
-
+  <script src="{{ url_for('static', filename='js/training.js') }}"></script>
 {% endblock %}

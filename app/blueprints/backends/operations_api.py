@@ -62,11 +62,17 @@ def apply_action(training_id):
 
 
     data = request.get_json()
+    print(data)
     try:
-        action = ActionModel.parse_raw(data)
+        action = ActionModel.parse_obj(data)
     except ValidationError as error:
-        raise InvalidPayload("bad request: invalid action payload", error) from None
-
+        return jsonify({
+            "status": "error",
+            "message": "Invalid action payload",
+            "error_code": 400,
+            "data": error.errors()
+        })
+    print(action)
     if action.action_type == ActionType.reorder:
         # reorder the position of two exercises
         exercises = training.exercises
@@ -75,10 +81,16 @@ def apply_action(training_id):
             pos2 = int(action.arg)
         except TypeError:
             return jsonify({
-                "message": "invalid action parameters, requres position and integer arg"
+                "status": "error",
+                "message": "Invalid arg parameters type, unable to conver to integer",
+                "error_code": 400
             }), HTTPStatus.BAD_REQUEST
         print("reordering!")
         exercises.insert(pos2, exercises.pop(pos1))
         new_data = training.model_dump(by_alias=True, exclude="id")
         app.db.trainings.update_one({"_id": training_id}, {"$set": new_data})
-    return jsonify({"message": "action completed"}), 200
+    return jsonify({
+        "status": "success",
+        "message": "Action completed successfully",
+    }), 200
+
