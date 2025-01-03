@@ -37,8 +37,8 @@
   </div>
 
       {% if training_id %}
-  <div class="row my-2 mx-1 p-2">
-      <a role="link" class="btn btn-secondary align-content-center"
+  <div class="row my-2 p-2">
+      <a role="link" class="btn btn-outline-primary align-content-center"
          href=" {{ url_for('trainings.training_details_view',  _id=training_id) }}">Return to training</a>
     {% endif %}
   </div>

@@ -70,6 +70,7 @@ def training_details_edit(_id):
         training_dict = training.model_dump(by_alias=True)
         training_dict.pop("_id")
         app.db.trainings.update_one({"_id": _id}, {"$set": training_dict})
+        flash("training edit completed", "")
         return redirect(url_for("trainings.training_details_view", _id=_id))
 
     # render the item
@@ -104,6 +105,7 @@ def create_training():
         training_dict = training.model_dump(by_alias=True)
         app.db.trainings.insert_one(training_dict)
 
+        flash("new training created")
         return redirect(url_for("trainings.view_trainings"))
     return render_template("trainings/training_new.html",
                            form=form, title="Add Training")
