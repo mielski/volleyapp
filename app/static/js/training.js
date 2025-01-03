@@ -29,7 +29,8 @@ function update_button_status() {
 
 $(document).ready(function () {
 
-    console.log("test")
+    // add functionality to the move up and move down buttons, doing ajax call to change order and shifting the
+    // elements
     $('.button-move-up, .button-move-down').on('click', function () {
         var $exercise = $(this).closest('.row');
         var currentPosition = $exercise.index();
@@ -86,4 +87,11 @@ $(document).ready(function () {
 
     })
     update_button_status();
+
+    // add functionality to the plus sign to add cookie to the browser with training id
+    $("#btn-add-exercises").click( function(event) {
+        Cookies.set("training_id", get_training_id())
+        console.log(Cookies.get("training_id"))
+    })
+
 })

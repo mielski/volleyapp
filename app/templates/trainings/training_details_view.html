@@ -48,8 +48,8 @@
         <button class="btn btn-warning button100px mx-3"
                 type="submit" role="button">{{ render_icon('trash') }}</button>
       </form>
-      <a class="btn btn-primary button100px mx-3 my-2 d-none d-md-inline-block my-md-0"
-         href="{{ url_for('exercises.view_all_exercises', training_id=training.id) }}">
+      <a id="btn-add-exercises" class="btn btn-primary button100px mx-3 my-2 d-none d-md-inline-block my-md-0"
+         href="{{ url_for('exercises.view_all_exercises') }}">
         <i class="fa fa-add"></i>
       </a>
     </div>
