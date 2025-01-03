@@ -1,13 +1,14 @@
+# Done
 
 # In progress
-- load exercises in training overview
+- ability to add exercise to a training
+  - 1) add training id to session
 
 # High priority todos
-- create special widget for skills and autofill in form
-- ability to add exercise to a training
 
 ## backlog
 
+- create special widget for skills and autofill in form
 - Add option to copy a training
 - use js to reduce number of get/post (feature)
 - add some nice transitions to the widgets

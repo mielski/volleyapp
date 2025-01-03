@@ -41,13 +41,17 @@
       </div>
     </div>
     <div class="m-2 d-flex flex-column flex-md-row">
-      <a class="btn btn-primary button100px p-2 mx-3 my-2 my-md-0"
+      <a class="btn btn-primary button100px mx-3 my-2 my-md-0"
          href="{{ url_for('trainings.training_details_edit', _id=training.id) }}"
          role="button">{{ render_icon('pencil') }}</a>
       <form action="{{ url_for('trainings.training_details_delete', _id=training.id) }}" method="POST">
-        <button class="btn btn-warning button100px p-2 mx-3"
+        <button class="btn btn-warning button100px mx-3"
                 type="submit" role="button">{{ render_icon('trash') }}</button>
       </form>
+      <a class="btn btn-primary button100px mx-3 my-2 d-none d-md-inline-block my-md-0"
+         href="{{ url_for('exercises.view_all_exercises', training_id=training.id) }}">
+        <i class="fa fa-add"></i>
+      </a>
     </div>
   </div>
   <div class="exercise-container">

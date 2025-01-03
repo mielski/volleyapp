@@ -1,6 +1,6 @@
 from typing import cast
 
-from flask import abort, Blueprint, current_app, redirect, url_for, render_template
+from flask import abort, Blueprint, current_app, redirect, url_for, render_template, request
 
 from app.forms import VolleyballExerciseForm
 from app.models import ExerciseModel
@@ -24,8 +24,11 @@ def get_exercise_data(_id) -> dict:
 def view_all_exercises():
 
     exercises = [ExerciseModel(**exercise) for exercise in app.db.exercises.find({})]
+
+    training_id = request.args.get("training_id")
     return render_template("exercises/view_exercises.html",
-                           title="View Exercises", exercises=exercises)
+                           title="View Exercises", exercises=exercises,
+                           training_id=training_id)
 
 @exercises_bp.route('/exercises/<string:_id>/view')
 def view_exercise(_id):
