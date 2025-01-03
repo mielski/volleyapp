@@ -19,6 +19,8 @@ app = cast(MyTrainingsApp, current_app)
 
 class ActionType(str, Enum):
     reorder = "reorder"
+    add = "add"
+    remove = "remove"
 
 
 class ActionModel(BaseModel):
@@ -73,24 +75,46 @@ def apply_action(training_id):
             "data": error.errors()
         })
     print(action)
+    exercises = training.exercises
     if action.action_type == ActionType.reorder:
         # reorder the position of two exercises
-        exercises = training.exercises
         pos1 = action.position
         try:
             pos2 = int(action.arg)
         except TypeError:
-            return jsonify({
-                "status": "error",
-                "message": "Invalid arg parameters type, unable to conver to integer",
-                "error_code": 400
-            }), HTTPStatus.BAD_REQUEST
+            return bad_request_error("error in 'arg' parameter: unable to convert into integer as new position.")
         print("reordering!")
         exercises.insert(pos2, exercises.pop(pos1))
-        new_data = training.model_dump(by_alias=True, exclude="id")
-        app.db.trainings.update_one({"_id": training_id}, {"$set": new_data})
+
+    elif action.action_type == ActionType.add:
+        # add a new exercise to target position in the list
+        if action.position > len(exercises):
+            return bad_request_error("position parameter exceeds lengths of exercises.")
+        new_exercise_id = action.arg
+        if not app.db.exercises.find({"_id": new_exercise_id}):
+            return bad_request_error("exercise id does not exist (provided in request via arg).")
+
+        exercises.insert(action.position, new_exercise_id)
+
+    elif action.action_type == ActionType.remove:
+        # remove an exercise by position
+        if action.position > len(exercises) - 1:
+            return bad_request_error("position parameter exceeds numer of exercises available.")
+        exercises.pop(action.position)
+
+    new_data = training.model_dump(by_alias=True, exclude="id")
+    app.db.trainings.update_one({"_id": training_id}, {"$set": new_data})
+
     return jsonify({
         "status": "success",
         "message": "Action completed successfully",
     }), 200
+
+
+def bad_request_error():
+    return jsonify({
+        "status": "error",
+        "message": "Invalid arg parameters type, unable to convert to integer",
+        "error_code": 400
+    }), HTTPStatus.BAD_REQUEST
 
