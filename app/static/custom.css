@@ -58,11 +58,15 @@ body {
     top: 50%;
     right: 0;
     transform: translate(50%, -50%);
-    background-color: #fff
+    background-color: #fff;
 
-}
+    &:hover {
+      color: black;
+        background-color: rgb(123, 177, 255)
+    }
 
-.button-add-exercise:hover {
-    color: black;
-    background-color: rgb(123, 177, 255)
+    &:disabled {
+        opacity: 1;
+        background-color: #fff
+    }
 }

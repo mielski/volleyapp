@@ -11,7 +11,7 @@
   </div>
   <div class="row row-cols-1 row-cols-xxl-3 row-cols-lg-2 g-3">
     {% for exercise in exercises %}
-      <div class="col" data-exercice-id="{{ exercise.id }}">
+      <div class="col" data-exercise-id="{{ exercise.id }}">
         <div class="card rounded rounded-bottom-4 h-100 position-relative">
           <a class="card-body card-nav d-flex flex-column rounded-bottom-4"
              href="{{ url_for('exercises.view_exercise', _id=exercise.id) }}">
@@ -26,9 +26,9 @@
             </div>
           </a>
           {% if training_id %}
-            <button aria-label="add exercise" role="button"
-                    class="btn btn-outline-primary btn-sm  button-add-exercise">
-              <i>+</i>
+            <button aria-label="add exercise" data-bs-toggle="button" role="button"
+                    class="btn btn-outline-primary btn-sm button-add-exercise align-content-center">
+              <i class="fa-solid fa-plus"></i>
             </button>
           {% endif %}
         </div>
@@ -42,5 +42,5 @@
          href=" {{ url_for('trainings.training_details_view',  _id=training_id) }}">Return to training</a>
     {% endif %}
   </div>
-
+  <script src="{{ url_for('static', filename='js/view_exercises.js') }}"></script>
 {% endblock %}
