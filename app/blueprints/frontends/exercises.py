@@ -25,7 +25,7 @@ def view_all_exercises():
 
     exercises = [ExerciseModel(**exercise) for exercise in app.db.exercises.find({})]
 
-    training_id = request.cookies.get("training_id")
+    training_id = request.args.get("training_id")
     return render_template("exercises/view_exercises.html",
                            title="View Exercises", exercises=exercises,
                            training_id=training_id)

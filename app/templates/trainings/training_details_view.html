@@ -49,7 +49,7 @@
                 type="submit" role="button">{{ render_icon('trash') }}</button>
       </form>
       <a id="btn-add-exercises" class="btn btn-primary button100px mx-3 my-2 d-none d-md-inline-block my-md-0"
-         href="{{ url_for('exercises.view_all_exercises', training=training.id) }}">
+         href="{{ url_for('exercises.view_all_exercises', training_id=training.id) }}">
         <i class="fa fa-add"></i>
       </a>
     </div>

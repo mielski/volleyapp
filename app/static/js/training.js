@@ -119,10 +119,4 @@ $(document).ready(function () {
 
     })
 
-    // add functionality to the plus sign to add cookie to the browser with training id
-    $("#btn-add-exercises").click( function(event) {
-        Cookies.set("training_id", get_training_id())
-        console.log(Cookies.get("training_id"))
-    })
-
 })

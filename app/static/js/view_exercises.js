@@ -1,6 +1,7 @@
 
 function getTrainingId() {
-    return Cookies.get("training_id");
+        const searchParams = new URLSearchParams(window.location.search);
+        return searchParams.get("training_id");
 }
 function add_exercise(button) {
     // adds the current exercise to the active training id
