@@ -15,7 +15,7 @@ import database_operations
 from blueprints.backends.exercises_api import create_exercise
 from flask import current_app
 
-from blueprints.backends.operations_api import ActionModel, ActionType
+from blueprints.backends.actions_api import ActionModel, ActionType
 from models import TrainingModel
 
 load_dotenv()
@@ -63,10 +63,9 @@ def item_ids(app_dict):
             "trainings": [v["_id"] for v in db.trainings.find({})]
             }
 
-def test_action(client, app_dict, item_ids):
-    """tests the read exercise api."""
+def test_action_reorder(client, app_dict, item_ids):
+    """tests the reorder action."""
     db = app_dict['db']
-
 
     action = ActionModel(action_type=ActionType.reorder, position=0, arg="1")
     training_id = item_ids["trainings"][0]
@@ -84,3 +83,51 @@ def test_action(client, app_dict, item_ids):
 
     assert training_pre.exercises != training_post.exercises
     assert training_pre.exercises[0] == training_post.exercises[1]
+
+
+def test_action_remove(client, app_dict, item_ids):
+    """tests the remove exercise action."""
+    db = app_dict['db']
+
+    action = ActionModel(action_type=ActionType.remove, position=0)
+    training_id = item_ids["trainings"][0]
+
+    training_pre = TrainingModel(**db.trainings.find_one({"_id": training_id}))
+
+    response = client.post(f'api/actions/{training_id}/',
+                           json=action.model_dump(),
+                           headers={"Content-Type": "Application/json"})
+
+
+    assert response.status_code == HTTPStatus.OK, "status 200 expected for read exercise"
+
+    training_post = TrainingModel(**db.trainings.find_one({"_id": training_id}))
+
+    assert training_post.exercises == training_pre.exercises[1:], "expected first exercise to be removed"
+
+
+def test_action_add(client, app_dict, item_ids):
+    """tests the add exercise action."""
+    db = app_dict['db']
+
+    # get a training
+    training_id = item_ids["trainings"][0]
+    training_pre = TrainingModel(**db.trainings.find_one({"_id": training_id}))
+
+    # get an exercise id
+    new_exercise_id = item_ids["exercises"][3]
+
+    action = ActionModel(action_type=ActionType.add, position=0, arg=new_exercise_id)
+
+    response = client.post(f'api/actions/{training_id}/',
+                           json=action.model_dump(),
+                           headers={"Content-Type": "Application/json"})
+
+
+    assert response.status_code == HTTPStatus.OK, "status 200 expected for read exercise"
+
+    training_post = TrainingModel(**db.trainings.find_one({"_id": training_id}))
+
+    assert training_post.exercises == [new_exercise_id] + training_pre.exercises, \
+        "expected new exercise at position 0"
+
