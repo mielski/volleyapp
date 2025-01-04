@@ -21,6 +21,7 @@ class ActionType(str, Enum):
     reorder = "reorder"
     add = "add"
     remove = "remove"
+    append = "append"
 
 
 class ActionModel(BaseModel):
@@ -86,21 +87,25 @@ def apply_action(training_id):
         print("reordering!")
         exercises.insert(pos2, exercises.pop(pos1))
 
-    elif action.action_type == ActionType.add:
+    elif action.action_type in (ActionType.add, ActionType.append):
         # add a new exercise to target position in the list
-        if action.position > len(exercises):
-            return bad_request_error("position parameter exceeds lengths of exercises.")
         new_exercise_id = action.arg
         if not app.db.exercises.find({"_id": new_exercise_id}):
             return bad_request_error("exercise id does not exist (provided in request via arg).")
+        if action.action_type == ActionType.append:
+            exercises.append(new_exercise_id)
+        else:
+            # else, action type = add and more sanity check required
+            if action.position > len(exercises):
+                return bad_request_error("position parameter exceeds lengths of exercises.")
 
-        exercises.insert(action.position, new_exercise_id)
-
+            exercises.insert(action.position, new_exercise_id)
     elif action.action_type == ActionType.remove:
         # remove an exercise by position
         if action.position > len(exercises) - 1:
             return bad_request_error("position parameter exceeds numer of exercises available.")
         exercises.pop(action.position)
+
 
     new_data = training.model_dump(by_alias=True, exclude="id")
     app.db.trainings.update_one({"_id": training_id}, {"$set": new_data})

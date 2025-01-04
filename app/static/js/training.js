@@ -88,6 +88,37 @@ $(document).ready(function () {
     })
     update_button_status();
 
+    $(".button-delete").click( function () {
+        //remove the current exercise from the training
+        const trainingId = get_training_id();
+        const exerciseRow =   $(this).closest(".row");
+        let position = exerciseRow.prevAll().length;
+        let exerciseId = exerciseRow.data("exercise-id");
+        let data = {
+                position: position,
+                action_type: "remove",
+            };
+        console.log("action data:");
+        console.log(data);
+        $.ajax({
+            url: `/api/actions/${trainingId}`,
+            method: "POST",
+            contentType: "Application/JSON",
+            data: JSON.stringify(data),
+            success: function(response) {
+                console.log("success response:");
+                console.log(response);
+                exerciseRow.slideUp(400, function (){exerciseRow.remove()});
+            },
+            error: function (response)  {
+                console.error(response);
+            }
+
+        });
+
+
+    })
+
     // add functionality to the plus sign to add cookie to the browser with training id
     $("#btn-add-exercises").click( function(event) {
         Cookies.set("training_id", get_training_id())

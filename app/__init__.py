@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from flask import redirect, url_for, jsonify
+from flask import redirect, url_for, jsonify, render_template
 from flask_bootstrap import Bootstrap5
 from pymongo import MongoClient
 
@@ -36,11 +36,10 @@ def create_app():
     @app.route('/')
     def index():  # immediate redirect to view
 
-        exercise = app.db.exercises.find_one()
-
         for rule in app.url_map.iter_rules():
             print(f"{rule.endpoint}: {rule}")
-        return redirect(url_for("exercises.view_all_exercises"))
+
+        return render_template("index.html")
 
 
     return app

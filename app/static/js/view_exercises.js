@@ -12,7 +12,7 @@ function add_exercise(button) {
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
-                action_type: 'add',
+                action_type: 'append',
                 position: 0,
                 arg: exerciseId
             }),
