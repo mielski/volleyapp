@@ -52,4 +52,17 @@ body {
 
 }
 
+/*  buttons in exercise overview to add exercise to training */
+.button-add-exercise {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(50%, -50%);
+    background-color: #fff
 
+}
+
+.button-add-exercise:hover {
+    color: black;
+    background-color: rgb(123, 177, 255)
+}
