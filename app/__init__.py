@@ -18,7 +18,7 @@ def create_app():
     app.secret_key = 'dev'
 
     load_dotenv(".")
-    app.db = MongoClient(os.environ["MONGO_SERVER"])['trainings_database']
+    app.db = MongoClient(os.environ["MONGO_URI"])['trainings_database']
     app.db.trainings = app.db['trainings']
     app.db.exercises = app.db['exercises']
 

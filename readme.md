@@ -13,7 +13,7 @@ This project uses pipenv
 ## setup environment
 
 This application requires a mongodb server as backend.
-The connection to this server should be stored in the environment variable MONGO_SERVER
+The connection to this server should be stored in the environment variable MONGO_URI
 
 ### using docker
 

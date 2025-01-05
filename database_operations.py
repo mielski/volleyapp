@@ -10,7 +10,7 @@ from app.models import TrainingModel, ExerciseModel, DifficultyLevel, Skills
 load_dotenv()
 
 
-db = MongoClient(os.environ["MONGO_SERVER"])['trainings_database']
+db = MongoClient(os.environ["MONGO_URI"])['trainings_database']
 # docker run -p 27017:27017 --name mongo_trainings --pull missing mongo:latest
 
 trainings: Collection = db.trainings
