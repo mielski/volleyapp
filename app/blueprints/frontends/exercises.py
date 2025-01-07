@@ -49,7 +49,7 @@ def edit_exercise(_id):
         exercise_dict = exercise.model_dump(by_alias=True)
         exercise_dict.pop("_id")
         app.db.exercises.update_one({"_id": _id}, {"$set": exercise_dict})
-        return redirect(url_for("view_all_exercises"))
+        return redirect(url_for("exercises.view_all_exercises"))
 
     else:
         exercise_data = get_exercise_data(_id)

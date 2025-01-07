@@ -58,8 +58,8 @@
     {% for exercise in exercises %}
       <div class="row m-2" data-exercise-id="{{ exercise.id }}">
         <hr>
-        <div class="col-11">{{ render_exercise(exercise) }}</div>
-        <div class="col-1 d-flex flex-column justify-content-center">
+        <div class="col-10 col-md">{{ render_exercise(exercise) }}</div>
+        <div class="col-2 d-none d-md-flex flex-column justify-content-center">
           <a class="btn btn-outline-primary m-2 button-edit"
              href="{{ url_for("exercises.edit_exercise", _id=exercise.id) }}"><i class="fa-solid fa-edit"></i></a>
           <button class="btn btn-outline-dark m-2 button-move-up"><i class="fa-solid fa-arrow-up"></i></button>
