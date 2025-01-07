@@ -1,4 +1,5 @@
 import datetime
+from enum import Enum
 
 import flask_wtf
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, TextAreaField, SelectField, \
@@ -65,6 +66,35 @@ class TrainingFormDetailed(TrainingForm):
             notes=training.notes
         )
 
+class EnumSelectorField(SelectMultipleField):
+    """specialized class to work with Enumeration fields,
+
+    Two overrides:
+    in constructor: choices should be an Enum and this is coersed into its underlying member values
+    to acts as a normal list of string choises
+
+    on loading data into the form: enumeration data is turned into strings.
+    """
+
+    def __init__(self, label=None, validators=None, coerce=str, choices=None, validate_choice=True, **kwargs):
+        if choices:
+            choices = [(member.value, member.value) for member in choices]
+        super().__init__(label, validators, coerce, choices, validate_choice, **kwargs)
+
+    @staticmethod
+    def _process_data_item(enum_value):
+        """turns any enumeration type into a string representation of its value attribute"""
+
+        try:
+            return enum_value.value
+        except (TypeError, AttributeError):
+            return enum_value
+
+    def process_data(self, value):
+        if value is not None:
+            value = [self._process_data_item(v) for v in value]
+        super().process_data(value)
+
 
 class VolleyballExerciseForm(flask_wtf.FlaskForm):
     """form used to view and edit volleybal exercises"""
@@ -81,9 +111,7 @@ class VolleyballExerciseForm(flask_wtf.FlaskForm):
     duration = StringField("Duration of the exercise", default="10",
                            description="Non-negative duration in minutes")
 
-    skill_focus = SelectMultipleField("Skill Focus",
-                                      choices=[(member.value, member.value) for member in Skills],
-                                      )  # Placeholder choices; replace as needed
+    skill_focus = EnumSelectorField("Skill Focus", choices=Skills,)
 
     intensity = IntegerField("Intensity", validators=[Optional(), NumberRange(min=1, max=5)],
                              description="1=low, 5=high")
