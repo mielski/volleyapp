@@ -70,8 +70,6 @@ $(function () {
     const input = $("#image_uploads");
 
 
-
-
     input[0].style.opacity = 0;
 
     input.change(updateImageDisplay)

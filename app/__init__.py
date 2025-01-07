@@ -1,5 +1,6 @@
 import os
 
+from azure.storage.blob import BlobClient, BlobServiceClient, ContainerClient
 from dotenv import load_dotenv
 from flask import redirect, url_for, jsonify, render_template, request
 from flask_bootstrap import Bootstrap5
@@ -22,6 +23,14 @@ def create_app():
     app.db.trainings = app.db['trainings']
     app.db.exercises = app.db['exercises']
 
+    if os.getenv("STORAGE_CONNECTION_STRING"):
+        storage_client = BlobServiceClient.from_connection_string(os.getenv("STORAGE_CONNECTION_STRING"))
+        app.blob_storage = storage_client.get_container_client("volleyimages")
+    else:
+        print("no storage account defined")
+        app.storage = None
+
+        ContainerClient
 
     # Register frontend blueprints
     app.register_blueprint(trainings_bp)
@@ -53,6 +62,9 @@ def create_app():
             if file := request.files["image_uploads"]:
                 print(f"trying to read the file {file.filename}")
                 file_data = file.read()
+
+                print(f"storing file to blob storage")
+                app.blob_storage.upload_blob(file.filename, file_data)
 
         return render_template("testpage.html")
     return app

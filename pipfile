@@ -13,6 +13,7 @@ wtforms = "*"
 pydantic = "*"
 pymongo = {extras = ["srv"], version = "*"}
 pytest = "*"
+azure-storage-blob = "*"
 
 [dev-packages]
 pipenv = "*"
