@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/utils.html' import render_icon %}
+{% from 'macros/blocks.html' import render_exercise %}
+{% block content %}
+
+    <form method="post" action="/testpage" enctype="multipart/form-data">
+      <div>
+        <label class="btn btn-outline-info" for="image_uploads">Choose image(s) to upload (PNG, JPG)</label>
+        <input
+                type="file"
+                id="image_uploads"
+                name="image_uploads"
+                accept=".jpg, .jpeg, .png"
+                multiple/>
+      </div>
+      <div class="preview">
+        <p>No files currently selected for upload</p>
+      </div>
+      <div>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  <script src="{{ url_for('static', filename='js/testpage.js') }}"></script>
+
+{%  endblock %}

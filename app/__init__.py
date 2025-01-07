@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from flask import redirect, url_for, jsonify, render_template
+from flask import redirect, url_for, jsonify, render_template, request
 from flask_bootstrap import Bootstrap5
 from pymongo import MongoClient
 
@@ -41,5 +41,18 @@ def create_app():
 
         return render_template("index.html")
 
+    @app.route("/testpage", methods=["GET", "POST"])
+    def testpage():
+        """page used during development"""
 
+        if request.method == "POST":
+            print(list(request.form.values()))
+            print(list(request.form.items()))
+            print(request.data)
+
+            if file := request.files["image_uploads"]:
+                print(f"trying to read the file {file.filename}")
+                file_data = file.read()
+
+        return render_template("testpage.html")
     return app
