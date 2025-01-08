@@ -94,3 +94,16 @@ def delete_exercise(_id):
         abort(HTTPStatus.NOT_FOUND, _id)
 
     return jsonify(message="Exercise deleted successfully.", acknowlegded=result.acknowledged), HTTPStatus.OK
+
+@exercises_api_bp.put("/<string:id>/images")
+def add_images(_id):
+    """api to add images to the exercise.
+
+    requirements:
+    accepted type: formData
+    files["images"] in the request files attribute.
+
+    """
+
+    for item in request.files.items():
+        print(item)
