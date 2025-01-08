@@ -1,4 +1,6 @@
 import os
+from logging import basicConfig, INFO, getLogger
+from pathlib import Path
 
 from azure.storage.blob import BlobClient, BlobServiceClient, ContainerClient
 from dotenv import load_dotenv
@@ -13,6 +15,33 @@ from blueprints.backends.exercises_api import exercises_api_bp
 from blueprints.backends.actions_api import actions_api_bp
 
 
+basicConfig(level=INFO)
+
+logger = getLogger(__name__)
+class LocalStorageClient:
+
+    def __init__(self, storage_dir: str | Path):
+        """
+
+        :param storage_dir: path towards which to store the data
+        """
+
+        self.storage_dir = Path(storage_dir).absolute()
+        if not os.path.exists(self.storage_dir):
+            os.mkdir(self.storage_dir)
+
+    def upload_blob(self, filename, data):
+
+        path = self.storage_dir / filename
+        with open(path, "wb") as fid:
+            fid.write(data)
+        logger.info(f"file written to {path}")
+
+    def download_blob(self, filename):
+
+        return open(self.storage_dir / filename, "rb")
+
+
 def create_app():
     """create the volleybal exercise application."""
     app = MyTrainingsApp(__name__)
@@ -23,14 +52,13 @@ def create_app():
     app.db.trainings = app.db['trainings']
     app.db.exercises = app.db['exercises']
 
-    if os.getenv("STORAGE_CONNECTION_STRING"):
+    if os.getenv("STORAGE_CONNECTION_STRING") and not os.getenv("LOCAL_STORAGE") == "TRUE":
         storage_client = BlobServiceClient.from_connection_string(os.getenv("STORAGE_CONNECTION_STRING"))
         app.blob_storage = storage_client.get_container_client("volleyimages")
     else:
-        print("no storage account defined")
-        app.storage = None
+        logger.info("no storage account defined -> using local")
+        app.blob_storage = LocalStorageClient(Path(__file__).parent / "static/img")
 
-        ContainerClient
 
     # Register frontend blueprints
     app.register_blueprint(trainings_bp)
