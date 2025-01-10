@@ -92,15 +92,21 @@ $(function () {
   let thumpnailImages = $("figure img").css({"cursor": "pointer"})
   let myModal = new bootstrap.Modal(document.getElementById('modal'), {})
   const modalImageContainer = $(".modal-body")
+  const modelCloseButton = $(modalImageContainer.firstChild);
 
   thumpnailImages.click( function() {
-
-    modalImageContainer.empty()
-    let imageSrc = $(this).attr("src")
-    imageEl = $(`<img class="img-fluid" aria-label="the image viewed in lightbox mode" src="${imageSrc}">`)
-    imageEl.appendTo(modalImageContainer)
+    // adds responsiveness to images to show in lightbox
+    let imageSrc = $(this).attr("src");
+    $("#modal-target").attr("src", imageSrc);
     myModal.show()
 
+  })
+
+  $(".button-delete").click( function() {
+    const imgDiv = $(this).parent().parent();
+    const buttonIsActive = $(this).hasClass("active");
+    console.log(buttonIsActive);
+    buttonIsActive ? imgDiv.addClass("image-delete") : imgDiv.removeClass("image-delete");
   })
   // style the elements for uploading new images
   const input = $("#image_uploads");

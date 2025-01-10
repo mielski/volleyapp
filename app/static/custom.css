@@ -70,3 +70,8 @@ body {
         background-color: #fff
     }
 }
+
+.image-delete img {
+    filter: grayscale(1) opacity(0.5);
+
+}
