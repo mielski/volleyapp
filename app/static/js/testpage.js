@@ -59,21 +59,14 @@ function updateImageDisplay() {
 
       list.append($(listItem));
     }
+
+
   }
 
 
 }
 
-
-$(function () {
-
-  const input = $("#image_uploads");
-
-
-  input[0].style.opacity = 0;
-  input.change(updateImageDisplay)
-
-  function putImagesToExercise(event) {
+function putImagesToExercise(event) {
       let formDataImage = new FormData($("form")[0]);
       let exerciseId = $("#submit").data("exercise-id")
       formDataImage.append('images', input[0].files[0]); // Assuming fileInput is your file input element
@@ -91,6 +84,29 @@ $(function () {
         }
       })
     }
+
+$(function () {
+
+
+  // style the elements for deleting existing images
+  let thumpnailImages = $("figure img").css({"cursor": "pointer"})
+  let myModal = new bootstrap.Modal(document.getElementById('modal'), {})
+  const modalImageContainer = $(".modal-body")
+
+  thumpnailImages.click( function() {
+
+    modalImageContainer.empty()
+    let imageSrc = $(this).attr("src")
+    imageEl = $(`<img class="img-fluid" aria-label="the image viewed in lightbox mode" src="${imageSrc}">`)
+    imageEl.appendTo(modalImageContainer)
+    myModal.show()
+
+  })
+  // style the elements for uploading new images
+  const input = $("#image_uploads");
+  input[0].style.opacity = 0;
+  input.change(updateImageDisplay)
+
 
 
 })
