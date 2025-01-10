@@ -95,7 +95,8 @@ def delete_exercise(_id):
 
     return jsonify(message="Exercise deleted successfully.", acknowlegded=result.acknowledged), HTTPStatus.OK
 
-@exercises_api_bp.put("/<string:id>/images")
+
+@exercises_api_bp.put("/<string:_id>/images")
 def add_images(_id):
     """api to add images to the exercise.
 
@@ -107,3 +108,5 @@ def add_images(_id):
 
     for item in request.files.items():
         print(item)
+
+    return jsonify(message="this in implementation", acknowlegded=True), HTTPStatus.OK

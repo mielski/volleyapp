@@ -67,10 +67,30 @@ function updateImageDisplay() {
 
 $(function () {
 
-    const input = $("#image_uploads");
+  const input = $("#image_uploads");
 
 
-    input[0].style.opacity = 0;
+  input[0].style.opacity = 0;
+  input.change(updateImageDisplay)
 
-    input.change(updateImageDisplay)
+  function putImagesToExercise(event) {
+      let formDataImage = new FormData($("form")[0]);
+      let exerciseId = $("#submit").data("exercise-id")
+      formDataImage.append('images', input[0].files[0]); // Assuming fileInput is your file input element
+      $.ajax({
+        url: `/api/exercises/${exerciseId}/images`,
+        type: "PUT",
+        data: formDataImage,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          console.log('Image uploaded successfully:', response);
+        },
+        error: function (xhr, status, error) {
+          console.error('Error uploading image:', error);
+        }
+      })
+    }
+
+
 })

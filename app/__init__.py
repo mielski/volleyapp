@@ -1,3 +1,4 @@
+import base64
 import os
 from logging import basicConfig, INFO, getLogger
 from pathlib import Path
@@ -42,6 +43,11 @@ class LocalStorageClient:
         return open(self.storage_dir / filename, "rb")
 
 
+def b64encode(data):
+    return base64.b64encode(data).decode('utf-8')
+
+
+
 def create_app():
     """create the volleybal exercise application."""
     app = MyTrainingsApp(__name__)
@@ -51,6 +57,7 @@ def create_app():
     app.db = MongoClient(os.environ["MONGO_URI"])['trainings_database']
     app.db.trainings = app.db['trainings']
     app.db.exercises = app.db['exercises']
+    app.filelist = {} # temporary
 
     if os.getenv("STORAGE_CONNECTION_STRING") and not os.getenv("LOCAL_STORAGE") == "TRUE":
         storage_client = BlobServiceClient.from_connection_string(os.getenv("STORAGE_CONNECTION_STRING"))
@@ -69,6 +76,7 @@ def create_app():
     app.register_blueprint(actions_api_bp)
 
     bootstrap = Bootstrap5(app)
+    app.jinja_env.filters['b64encode'] = b64encode
 
     @app.route('/')
     def index():  # immediate redirect to view
@@ -82,17 +90,20 @@ def create_app():
     def testpage():
         """page used during development"""
 
+        _id = app.db.exercises.find_one()["_id"]
+
         if request.method == "POST":
             print(list(request.form.values()))
             print(list(request.form.items()))
             print(request.data)
 
-            if file := request.files["image_uploads"]:
-                print(f"trying to read the file {file.filename}")
-                file_data = file.read()
+            if filelist := request.files.getlist("image_uploads"):
+                for file_ in filelist:
+                    print(f"got {len(filelist)} files")
+                    file_data = file_.read()
+                    mime_type = file_.mimetype
+                    print(f"storing file to blob storage")
+                    app.filelist[file_.filename] = (file_data, mime_type)
 
-                print(f"storing file to blob storage")
-                app.blob_storage.upload_blob(file.filename, file_data)
-
-        return render_template("testpage.html")
+        return render_template("testpage.html", exercise_id=_id, filelist=app.filelist)
     return app
