@@ -52,6 +52,7 @@ def add_some_exercises():
 
     exercices_to_add = [
         dict(
+            _id="test_exercise_1",
             title="Circuit 5 ballen",
             approach="spelers doen een circuit van 5 balacties. <ul><li>Blok op buiten</li><li>"
             "Aflopen en geslagen bal verdedigen van over net</li><li>Diepe bal positie 6</li></ul>",
