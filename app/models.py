@@ -4,7 +4,7 @@ from datetime import date, datetime
 from enum import Enum
 from typing import Optional, List, Dict
 
-from pydantic import BaseModel, Field, conint, PositiveInt, HttpUrl, field_serializer
+from pydantic import BaseModel, Field, conint, PositiveInt, HttpUrl, field_serializer, FileUrl, AnyHttpUrl
 from pydantic_core import Url
 
 
@@ -64,8 +64,8 @@ class ExerciseModel(BaseModel):
                                       )  # List of skills
     intensity: Optional[int] = Field(default=None, title="Intensity of the training (1=low, 5=high)")
     video_url: Optional[HttpUrl] = Field(default=None)  # Optional, must be a valid URL
-    image_uris: List[HttpUrl] = Field(default_factory=lambda: list(),
-                                      description="list of image uris",
+    image_urls: List[str] = Field(default_factory=lambda: list(),
+                                      description="list of image file uris from blob storage",
                                       examples=["https://blobstorage/trainings/image1.png",
                                                 "https://blobstorage/trainings/image2.png"])  # Optional, must be a valid URL
     created_at: datetime = Field(default_factory=lambda: datetime.now())  # Automatically set to now
