@@ -1,17 +1,18 @@
 # Done
 
 # In progress
-- ability to add exercise to a training
-  - 1) add training id to session
+- create new test exercises with images included
+- update exercise view and form to include images 
 
 # High priority todos
-
+- add to github
+- deploy app to appservice
+- set security on endpoints
 ## backlog
 
+- ability to add training specific exercises + buttons
 - create special widget for skills and autofill in form
 - Add option to copy a training
-- use js to reduce number of get/post (feature)
-- add some nice transitions to the widgets
 - have variations to a training based on number of players\
   - update the model
   - update the view
