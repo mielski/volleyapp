@@ -1,10 +1,13 @@
 """methods related to the storage account"""
 
 from azure.storage.blob import BlobServiceClient, generate_blob_sas, BlobSasPermissions
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 
 
 class BlobStorageUrlBuilder:
+    """builder for blob urls with sas token based on a file name.
+
+    this is used by the app to convert the blob name from the database into a URL."""
 
     def __init__(self, blob_service_client: BlobServiceClient, container_name, timedelta=15):
 
@@ -21,7 +24,7 @@ class BlobStorageUrlBuilder:
             blob_name=blob_name,
             account_key=self._client.credential.account_key,
             permission=BlobSasPermissions(read=True, write=True),
-            expiry=datetime.utcnow() + timedelta(minutes=self.timedelta),  # Short expiry time
+            expiry=datetime.now(UTC) + timedelta(minutes=self.timedelta),  # Short expiry time
         )
 
         blob_url = f"https://{account_name}.blob.core.windows.net/{self._container_name}/{blob_name}?{sas_token}"
