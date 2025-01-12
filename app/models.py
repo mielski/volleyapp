@@ -64,10 +64,16 @@ class ExerciseModel(BaseModel):
                                       )  # List of skills
     intensity: Optional[int] = Field(default=None, title="Intensity of the training (1=low, 5=high)")
     video_url: Optional[HttpUrl] = Field(default=None)  # Optional, must be a valid URL
-    image_urls: List[str] = Field(default_factory=lambda: list(),
-                                      description="list of image file uris from blob storage",
-                                      examples=["https://blobstorage/trainings/image1.png",
-                                                "https://blobstorage/trainings/image2.png"])  # Optional, must be a valid URL
+    image_blob_names: List[str] = Field(default_factory=lambda: list(),
+                                      description="list of image blob names in the store storage",
+                                      examples=["image1.png",
+                                                "image2.png"])  # Optional, must be a valid URL
+    image_blob_urls: List[str] = Field(default_factory=lambda: list(),
+                                      description="list of equivalent image urls, only for internal use in the app",
+                                      examples=["http/<storage>/<container>/image1.png:token",
+                                                "image2.png"],
+                                      exclude=True
+                                      )
     created_at: datetime = Field(default_factory=lambda: datetime.now())  # Automatically set to now
     updated_at: datetime = Field(default_factory=lambda: datetime.now())  # Automatically set to now
     tags: List[str] = Field(default_factory=lambda: list())  # Default to an empty list

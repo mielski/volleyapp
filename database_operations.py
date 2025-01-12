@@ -60,8 +60,8 @@ def add_some_exercises():
             skill_focus=[Skills.Footwork, Skills.Defense],
             duration=10,
             intensity=3,
-            image_urls=[CONTAINER_URI + "tactical-board.com (10).png",
-                        CONTAINER_URI + "tactical-board.com (9).png"]
+            image_blob_names=["tactical-board.com (10).png",
+                              "tactical-board.com (9).png"]
             ),
         dict(
             title="Vlinder - single Passer",

@@ -14,7 +14,9 @@ from app.blueprints.frontends.exercises import exercises_bp
 from app.training_app import MyTrainingsApp
 from blueprints.backends.exercises_api import exercises_api_bp
 from blueprints.backends.actions_api import actions_api_bp
+from storage import BlobStorageUrlBuilder
 
+CONTAINERNAME = "volleyimages"
 
 basicConfig(level=INFO)
 
@@ -61,7 +63,9 @@ def create_app():
 
     if os.getenv("STORAGE_CONNECTION_STRING") and not os.getenv("LOCAL_STORAGE") == "TRUE":
         storage_client = BlobServiceClient.from_connection_string(os.getenv("STORAGE_CONNECTION_STRING"))
-        app.blob_storage = storage_client.get_container_client("volleyimages")
+        app.blob_storage = storage_client.get_container_client(CONTAINERNAME)
+        app.blob_url_builder = BlobStorageUrlBuilder(storage_client, CONTAINERNAME)
+
     else:
         logger.info("no storage account defined -> using local")
         app.blob_storage = LocalStorageClient(Path(__file__).parent / "static/img")

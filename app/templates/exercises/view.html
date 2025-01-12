@@ -25,7 +25,12 @@
         {% endfor %}
       </div>
       <div class="row">
-        <div class="col col-6">>
+        {% for blob_url in exercise.image_blob_urls %}
+          <div class="col col-6">
+          <img src="{{ blob_url }}" alt="{{ exercise.image_blob_names[loop.index0] }}" class="img-fluid">
+          </div>
+        {% endfor %}
+      <div class="col col-6">
           <svg class="bd-placeholder-img img-thumbnail" width="400" height="300" xmlns="http://www.w3.org/2000/svg"
                role="img"
                aria-label="A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera: 200x200"

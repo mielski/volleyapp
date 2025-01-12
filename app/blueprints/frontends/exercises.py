@@ -36,6 +36,7 @@ def view_exercise(_id):
     exercise_data = get_exercise_data(_id)
     exercise = ExerciseModel(**exercise_data)
 
+    exercise.image_blob_urls = [app.blob_url_builder.get_url(name) for name in exercise.image_blob_names]
     return render_template('exercises/view.html', exercise=exercise)
 
 @exercises_bp.route('/exercises/<string:_id>/edit', methods=["GET", "POST"])
