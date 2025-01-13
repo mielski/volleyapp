@@ -23,3 +23,8 @@ The connection to this server should be stored in the environment variable MONGO
 
 Also, in pycharm the configuration [.run/mongo_container.run.xml](.run/mongo_container.run.xml)
 can be used as task before launch so that the container is always restarted automatically.
+
+## deployment actions azure
+
+Create requirements.txt
+`pipenv requirements > requirements.txt`
