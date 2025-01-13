@@ -111,3 +111,7 @@ def create_app():
 
         return render_template("testpage.html", exercise_id=_id, filelist=app.filelist)
     return app
+
+if __name__ == '__main__':
+    app = create_app()
+    app.run()
