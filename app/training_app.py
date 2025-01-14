@@ -1,6 +1,6 @@
 from flask import Flask
 from pymongo.synchronous.collection import Collection
-from storage import BlobStorageUrlBuilder
+from app.storage import BlobStorageUrlBuilder
 
 class TrainingMongoClient:
 
