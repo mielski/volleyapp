@@ -5,7 +5,7 @@
     <div class="row row-gap-2">
       <h2 class="text-primary my-3">{{ exercise.title }}</h2>
     </div>
-    <div class="row">
+    <div class="row justify-content-between">
       <div class="col col-md-3">
         <h5><i class="fa fa-bolt"></i><span class="mx-2">Difficulty</span></h5>
         {{ render_difficulty_view(exercise) }}
@@ -21,21 +21,23 @@
         {% endfor %}
       </div>
       <div class="row">
-        <div class="col col-4">>
-          <svg class="bd-placeholder-img img-thumbnail" width="300" height="auto" xmlns="http://www.w3.org/2000/svg"
-               role="img"
-               aria-label="A generic square placeholder image with a white border around it, making it resemble a photograph taken with an old instant camera: 200x200"
-               preserveAspectRatio="xMidYMid slice" focusable="false"><title>A generic square placeholder image with a
-            white border around it, making it resemble a photograph taken with an old instant camera</title>
-            <rect width="100%" height="100%" fill="#868e96"></rect>
-            <text x="50%" y="50%" fill="#dee2e6" dy=".3em" dx="-2em">300x200</text>
-          </svg>
-        </div>
-        <div class="col m-2">
+        {#        <div class="col col-6 clearfix">#}
+        {#          #}
+        {#        </div>#}
+        <div class="col">
+          <img class="img-fluid m-2 float-lg-start" style="max-width: 500px"
+               src="https://images.unsplash.com/photo-1735506266367-d6941df3efdc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
           <h5>Approach</h5>
           <p> {{ exercise.approach }}</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur assumenda at dignissimos eum facere
+            hic maxime, nostrum repudiandae saepe? Dolorum modi neque temporibus! At illum inventore necessitatibus
+            placeat quis recusandae temporibus ut. Illum quibusdam sunt tenetur. Alias, aspernatur at consequuntur cum
+            eaque eligendi error impedit molestiae nam neque pariatur quibusdam quis quo rem sed. Aliquam aliquid
+            aperiam consectetur ducimus earum esse et exercitationem expedita explicabo hic iste magni molestias
+            nesciunt numquam quisquam quod ratione reiciendis, repellat tempore totam. Aliquam cumque distinctio earum
+            eos fuga fugit id illum in modi molestiae molestias nihil nostrum pariatur repudiandae sit temporibus, vel
+            vero voluptas.</p>
         </div>
-
       </div>
     </div>
   </div>
