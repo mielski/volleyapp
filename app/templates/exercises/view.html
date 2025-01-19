@@ -2,45 +2,43 @@
 {% from 'macros/widgets.html' import render_difficulty_view %}
 
 {% block content %}
-  <div>
-    <div class="row row-gap-2">
-      <h1 class="text-primary my-3">{{ exercise.title }}</h1>
+  <div class="row row-gap-2">
+    <h1 class="text-primary my-3">{{ exercise.title }}</h1>
 
-      <h5>Approach</h5>
-      <p> {{ exercise.approach }}</p>
+    <h5>Approach</h5>
+    <p> {{ exercise.approach }}</p>
+  </div>
+  <div class="row mt-2 justify-content-between">
+    <div class="col col-md-3">
+      <h5 class="text-nowrap"><i class="fa fa-bolt"></i><span class="mx-2">Difficulty</span></h5>
+      {{ render_difficulty_view(exercise) }}
+    </div>
+    <div class="col col-md-3">
+      <h5 class="text-nowrap"><i class="fa-regular fa-hourglass-half"></i><span class="mx-2">Duration</span></h5>
+      <p>{{ exercise.duration }} minutes</p>
+    </div>
+    <div class="col col-md-3">
+      <h5 class="text-nowrap"><i class="fa-solid fa-bullseye"></i></i><span class="mx-2">Skill Focus</span></h5>
+      {% for skill in exercise.skill_focus %}
+        <span class="badge bg-dark">{{ skill.value }}</span>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="row">
+  {% for blob_url in exercise.image_blob_urls %}
+
+    <div class="col col-12 col-md-10 col-lg-6 m-auto my-1">
+      <img src="{{ blob_url }}" alt="{{ exercise.image_blob_names[loop.index0] }}" class="img-fluid">
     </div>
 
+  {% endfor %}
+  </div>
+    <div>
+      <div class="btn-group btn-group-lg">
 
-    {% for blob_url in exercise.image_blob_urls %}
-      <div class="row">
-        <div class="col col-md-10 col-lg-8 m-auto my-1">
-          <img src="{{ blob_url }}" alt="{{ exercise.image_blob_names[loop.index0] }}" class="img-fluid">
-        </div>
+        <a class="btn btn-outline-primary px-4 m-2" href="{{ url_for('exercises.edit_exercise', _id=exercise.id) }}">Edit</a>
+        <a class="btn btn-outline-dark px-4 m-2" href="{{ url_for('exercises.view_all_exercises') }}">Return</a>
       </div>
-    {% endfor %}
-    <div class="row mt-2 justify-content-between">
-      <div class="col col-md-3">
-        <h5 class="text-nowrap"><i class="fa fa-bolt"></i><span class="mx-2">Difficulty</span></h5>
-        {{ render_difficulty_view(exercise) }}
-      </div>
-      <div class="col col-md-3">
-        <h5 class="text-nowrap"><i class="fa-regular fa-hourglass-half"></i><span class="mx-2">Duration</span></h5>
-        <p>{{ exercise.duration }} minutes</p>
-      </div>
-      <div class="col col-md-3">
-        <h5 class="text-nowrap"><i class="fa-solid fa-bullseye"></i></i><span class="mx-2">Skill Focus</span></h5>
-        {% for skill in exercise.skill_focus %}
-          <span class="badge bg-dark">{{ skill.value }}</span>
-        {% endfor %}
-      </div>
-      <div>
-        <div class="btn-group btn-group-lg">
-
-          <a class="btn btn-outline-primary px-4 m-2" href="{{ url_for('exercises.edit_exercise', _id=exercise.id) }}">Edit</a>
-          <a class="btn btn-outline-dark px-4 m-2" href="{{ url_for('exercises.view_all_exercises') }}">Return</a>
-        </div>
-      </div>
-
     </div>
 
   </div>

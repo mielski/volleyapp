@@ -19,7 +19,10 @@ app = cast(MyTrainingsApp, current_app)
 def load_exercises(training: TrainingModel) -> list[ExerciseModel]:
 
     exercise_ids = training.exercises
-    return [ExerciseModel(**app.db.exercises.find_one(id_)) for id_ in exercise_ids]
+    exercises = [ExerciseModel(**app.db.exercises.find_one(id_)) for id_ in exercise_ids]
+    for exercise in exercises:
+        exercise.image_blob_urls = [app.blob_url_builder.get_url(name) for name in exercise.image_blob_names]
+    return exercises
 
 
 def get_training_data(_id) -> dict:
