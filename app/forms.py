@@ -133,6 +133,6 @@ class VolleyballExerciseForm(flask_wtf.FlaskForm):
             skill_focus=exercise.skill_focus,
             intensity=exercise.intensity,
             video_url=exercise.video_url,
-            image_uris=exercise.image_uris,
+            image_uris=exercise.image_blob_urls,
             tags=exercise.tags
         )

@@ -5,22 +5,19 @@
 
   <form method="post" action="/testpage" enctype="multipart/form-data">
     <div>
-      <p><small>{{ exercise_id }}</small></p>
+      <p><small>{{ exercise.id }}</small></p>
       <label class="form-label" for="existing_images">Existing images</label>
       <div class="row">
-        {% for filename, (data, mimetype) in filelist.items() %}
-          {% if filename %}
+        {% for blob_url in exercise.image_blob_urls %}
           <div class="col-3 d-flex flex-column">
             <figure>
-              <img class="img-thumbnail" src="data: {{ mimetype }};base64, {{ data|b64encode }}" alt="{{ filename }}">
-              <figcaption>{{ filename }}</figcaption>
+              <img class="img-thumbnail" src="{{ blob_url }}" alt="blob image {{ loop.index }} of exercise">
             </figure>
             <div class="buttonbar d-flex justify-content-center">
               <button type="button" aria-label="select for deletion" aria-pressed="false"
                       class="btn btn-outline-danger button-delete" data-bs-toggle="button" data-index="{{ loop.index0 }}">delete</button>
             </div>
           </div>
-          {% endif %}
         {% endfor %}
       </div>
       {% if filelist | length == 0 %}

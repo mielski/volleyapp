@@ -15,6 +15,7 @@ from app.training_app import MyTrainingsApp
 from app.blueprints.backends.exercises_api import exercises_api_bp
 from app.blueprints.backends.actions_api import actions_api_bp
 from app.storage import BlobStorageUrlBuilder
+from models import ExerciseModel
 
 CONTAINERNAME = "volleyimages"
 
@@ -94,8 +95,11 @@ def create_app():
     def testpage():
         """page used during development"""
 
-        _id = app.db.exercises.find_one()["_id"]
+        # _id = app.db.exercises.find_one({"_id": 'test_exercise_1'})
+        _id = 'test_exercise_1'
+        exercise = ExerciseModel(**app.db.exercises.find_one({"_id": _id}))
 
+        exercise.image_blob_urls = [app.blob_url_builder.get_url(image) for image in exercise.image_blob_names]
         if request.method == "POST":
             print(list(request.form.values()))
             print(list(request.form.items()))
@@ -109,5 +113,5 @@ def create_app():
                     print(f"storing file to blob storage")
                     app.filelist[file_.filename] = (file_data, mime_type)
 
-        return render_template("testpage.html", exercise_id=_id, filelist=app.filelist)
+        return render_template("testpage.html", exercise=exercise, filelist=app.filelist)
     return app
