@@ -7,7 +7,7 @@
 
   <h1 class="mb-3">Edit Exercise</h1>
 
-  <form name="edit exercise" method="post" class="p-2 ">
+  <form name="edit exercise" method="post" class="p-2" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
     {{ render_hidden_errors(form) }}
     <div class="form-group form-group-lg mb-3">
@@ -33,6 +33,7 @@
             <div class="buttonbar d-flex justify-content-center">
               <input type="checkbox" aria-label="select for deletion"
                       class="btn-check button-delete" autocomplete="off"
+                      name="delete_images" value="{{ loop.index0 }}"
                       data-index="{{ loop.index0 }}" id="button-delete-{{ loop.index0 }}">
               <label for="button-delete-{{ loop.index0 }}" class="btn btn-outline-danger">delete</label>
             </div>

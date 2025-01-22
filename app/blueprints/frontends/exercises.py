@@ -1,6 +1,6 @@
 from typing import cast
 
-from flask import abort, Blueprint, current_app, redirect, url_for, render_template, request, session
+from flask import abort, Blueprint, current_app, redirect, url_for, render_template, request, session, flash
 
 from app.forms import VolleyballExerciseForm
 from app.models import ExerciseModel
@@ -46,10 +46,22 @@ def edit_exercise(_id):
 
     if form.validate_on_submit():
         # ran when post method is successful -> update data about exercise from form data
+        print(form.data)
         exercise = ExerciseModel(**form.data)
         exercise_dict = exercise.model_dump(by_alias=True)
         exercise_dict.pop("_id")
-        app.db.exercises.update_one({"_id": _id}, {"$set": exercise_dict})
+        print(exercise)
+        if filelist := request.files.getlist("new_images"):
+            for file_ in filelist:
+                print(f"got {len(filelist)} files")
+                file_data = file_.read()
+                mime_type = file_.mimetype
+                print(f"storing file to blob storage")
+                app.filelist[file_.filename] = (file_data, mime_type)
+        # app.db.exercises.update_one({"_id": _id}, {"$set": exercise_dict})
+        print("delete images data: ", form.data.get("delete_images"))
+        flash("succes!")
+        return render_template('exercises/edit.html', exercise=exercise, form=form)
         return redirect(url_for("exercises.view_all_exercises"))
 
     else:

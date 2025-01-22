@@ -93,5 +93,5 @@ $(function () {
     updateImageDisplay();
     resetDeleteButtons();
   })
-  $("#new_images").change(updateImageDisplay)
+  $("#new_images_field").change(updateImageDisplay)
 })
