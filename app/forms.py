@@ -118,7 +118,7 @@ class VolleyballExerciseForm(flask_wtf.FlaskForm):
 
     video_url = URLField("Video URL", validators=[Optional(), URL()])
 
-    new_images = MultipleFileField("Upload new images", render_kw={"accept": "image/png, image/jpeg"})
+    new_images = MultipleFileField("Upload new images", id="new_images", render_kw={"accept": "image/png, image/jpeg"})
     image_uris = FieldList(URLField("Image URI", validators=[URL()]), description="URLs for exercise images")
 
     tags = FieldList(StringField("Tag"), description="Tags for the exercise")

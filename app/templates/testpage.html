@@ -10,9 +10,7 @@
       <div class="row">
         {% for blob_url in exercise.image_blob_urls %}
           <div class="col-3 d-flex flex-column">
-            <figure>
-              <img class="img-thumbnail" src="{{ blob_url }}" alt="blob image {{ loop.index }} of exercise">
-            </figure>
+            <img class="img-thumbnail" src="{{ blob_url }}" alt="blob image {{ loop.index }} of exercise">
             <div class="buttonbar d-flex justify-content-center">
               <button type="button" aria-label="select for deletion" aria-pressed="false"
                       class="btn btn-outline-danger button-delete" data-bs-toggle="button" data-index="{{ loop.index0 }}">delete</button>

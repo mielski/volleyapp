@@ -20,34 +20,25 @@
     </div>
 
     {{ render_form_row([form.difficulty_level, form.duration, form.skill_focus]) }}
-    <p class="text-primary">image control</p>
-    <div class="row">
-      {% for blob_url in exercise.image_blob_urls %}
-        <div class="col-3 d-flex flex-column">
-          <img class="img-thumbnail" src="{{ blob_url }}" alt="blob image {{ loop.index }} of exercise">
-          <div class="buttonbar d-flex justify-content-center">
-            <button type="button" aria-label="select for deletion" aria-pressed="false"
-                    class="btn btn-outline-danger button-delete" data-bs-toggle="button" data-index="{{ loop.index0 }}">
-              delete
-            </button>
+    <div class="form-group border border-lg p-2">
+      <label class="text-black h5 d-block justify-content-center">image control</label>
+      <div class="row">
+        {% for blob_url in exercise.image_blob_urls %}
+          <div class="col-3 d-flex flex-column">
+            <img class="img-thumbnail" src="{{ blob_url }}" alt="blob image {{ loop.index }} of exercise">
+            <div class="buttonbar d-flex justify-content-center">
+              <button type="button" aria-label="select for deletion" aria-pressed="false"
+                      class="btn btn-outline-danger button-delete" data-bs-toggle="button"
+                      data-index="{{ loop.index0 }}">
+                delete
+              </button>
+            </div>
           </div>
-        </div>
-      {% endfor %}
+        {% endfor %}
+      </div>
     </div>
     <div class="form-group">
-      <div class="">
-        {% if filelist | length == 0 %}
-          <p>no files in filelist</p>
-        {% endif %}
-        {{ render_field(form.new_images) }}
-        <label class="btn btn-outline-info" for="image_uploads">Choose image(s) to upload (PNG, JPG)</label>
-        <input class="form-control-file d-none"
-              type="file"
-              id="image_uploads"
-              name="image_uploads"
-              accept=".jpg, .jpeg, .png"
-              multiple/>
-      </div>
+      {{ render_field(form.new_images) }}
       <div class="preview">
         <p>No files currently selected for upload</p>
       </div>
@@ -58,10 +49,22 @@
       <a class="btn btn-light p-1 m-2 button100px" href="{{ url_for('exercises.view_all_exercises') }}">Cancel</a>
     </div>
   </form>
+  <div class="modal modal-xl" id="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="model-body">
+          <button type="button" class="position-absolute btn-close p-3 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
+          <img id="modal-target" class="img-fluid">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
 
   {#  {{ render_form(form) }}#}
 
-  <script src="{{ url_for('static', filename='js/script.js') }}">
-  </script>
-  <script src="{{ url_for('static', filename='js/testpage.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/edit-exercise.js') }}"></script>
 {% endblock %}
