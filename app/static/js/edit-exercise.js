@@ -41,29 +41,16 @@ function updateImageDisplay() {
     para.text = "No files currently selected for upload";
     preview.append(para);
   } else {
-    const list = $("<ol>");
-    preview.append(list);
 
     for (const file of curFiles) {
-      const listItem = document.createElement("li");
-      const para = document.createElement("p");
       if (validFileType(file)) {
-        para.textContent = `File name ${file.name}, file size ${returnFileSize(
-          file.size,
-        )}.`;
-        const image = document.createElement("img");
-        image.src = URL.createObjectURL(file);
-        image.alt = image.title = file.name;
-        image.classList.add("img-thumpnail");
-
-        listItem.appendChild(image);
-        listItem.appendChild(para);
+        preview.append($(
+            `<div class="col col-3"><img src="${URL.createObjectURL(file)}" class="img-thumbnail">
+            <p>File name ${file.name}, file size ${returnFileSize(file.size)}.</p>
+            </div>`))
       } else {
-        para.textContent = `File name ${file.name}: Not a valid file type. Update your selection.`;
-        listItem.appendChild(para);
+        preview.append($(`<div class="col col-3"><p>File name ${file.name}: Not a valid file type. Update your selection.</p>`))
       }
-
-      list.append($(listItem));
     }
   }
 }
