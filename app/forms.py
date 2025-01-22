@@ -3,7 +3,7 @@ from enum import Enum
 
 import flask_wtf
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, TextAreaField, SelectField, \
-    IntegerField, FieldList, SelectMultipleField, URLField, DateTimeLocalField
+    IntegerField, FieldList, SelectMultipleField, URLField, DateTimeLocalField, MultipleFileField
 from wtforms.validators import DataRequired, Length, NumberRange, Optional, URL
 
 from .models import TrainingModel, ExerciseModel, Skills, DifficultyLevel
@@ -118,6 +118,7 @@ class VolleyballExerciseForm(flask_wtf.FlaskForm):
 
     video_url = URLField("Video URL", validators=[Optional(), URL()])
 
+    new_images = MultipleFileField("Upload new images", render_kw={"accept": "image/png, image/jpeg"})
     image_uris = FieldList(URLField("Image URI", validators=[URL()]), description="URLs for exercise images")
 
     tags = FieldList(StringField("Tag"), description="Tags for the exercise")

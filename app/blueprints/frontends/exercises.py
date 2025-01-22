@@ -55,6 +55,7 @@ def edit_exercise(_id):
     else:
         exercise_data = get_exercise_data(_id)
         exercise = ExerciseModel(**exercise_data)
+        app.blob_url_builder.add_urls(exercise)
         form = VolleyballExerciseForm.from_exercise(exercise)
         return render_template('exercises/edit.html', exercise=exercise, form=form)
 

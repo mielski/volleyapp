@@ -3,6 +3,8 @@
 from azure.storage.blob import BlobServiceClient, generate_blob_sas, BlobSasPermissions
 from datetime import datetime, timedelta, UTC
 
+from models import ExerciseModel
+
 
 class BlobStorageUrlBuilder:
     """builder for blob urls with sas token based on a file name.
@@ -15,6 +17,10 @@ class BlobStorageUrlBuilder:
         self._container_name = container_name
         self._container_client = self._client.get_container_client(container_name)
         self.timedelta = timedelta
+
+    def add_urls(self, exercise: ExerciseModel):
+        """adds all the image blob urls to an exercise"""
+        exercise.image_blob_urls = [self.get_url(blob_name) for blob_name in exercise.image_blob_names]
 
     def get_url(self, blob_name):
         account_name = self._client.account_name
