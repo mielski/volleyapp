@@ -13,6 +13,8 @@ const fileTypes = [
   "image/x-icon",
 ];
 
+const deleteButtons = $(".button-delete")
+
 function validFileType(file) {
   return fileTypes.includes(file.type);
 }
@@ -52,6 +54,7 @@ function updateImageDisplay() {
         const image = document.createElement("img");
         image.src = URL.createObjectURL(file);
         image.alt = image.title = file.name;
+        image.classList.add("img-thumpnail");
 
         listItem.appendChild(image);
         listItem.appendChild(para);
@@ -65,7 +68,14 @@ function updateImageDisplay() {
   }
 }
 
-function putImagesToExercise(event) {
+function resetDeleteButtons() {
+  // resets the delete buttons and their images
+  deleteButtons.removeClass("active");
+  imgDivs = deleteButtons.parent().parent();
+  imgDivs.removeClass("image-delete");
+
+}
+function putImagesToExercise(event){
       let formDataImage = new FormData($("form")[0]);
       let exerciseId = $("#submit").data("exercise-id")
       formDataImage.append('images', input[0].files[0]); // Assuming fileInput is your file input element
@@ -101,12 +111,19 @@ $(function () {
 
   })
 
-  $(".button-delete").click( function() {
+  deleteButtons.click( function() {
     const imgDiv = $(this).parent().parent();
     const buttonIsActive = $(this).hasClass("active");
     console.log(buttonIsActive);
     buttonIsActive ? imgDiv.addClass("image-delete") : imgDiv.removeClass("image-delete");
   })
 
+  // ensure that reset also resets the delete buttons and the image display
+  $("#form-reset").click(function () {
+    $("form")[0].reset()
+
+    updateImageDisplay();
+    resetDeleteButtons();
+  })
   $("#new_images").change(updateImageDisplay)
 })
