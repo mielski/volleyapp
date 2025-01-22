@@ -25,13 +25,16 @@
       <div class="row">
         {% for blob_url in exercise.image_blob_urls %}
           <div class="col-3 d-flex flex-column">
-            <img class="img-thumbnail" src="{{ blob_url }}" alt="blob image {{ loop.index }} of exercise">
+            <figure>
+              <img class="img-thumbnail" src="{{ blob_url }}" alt="blob image {{ loop.index }} of exercise">
+              <figcaption>{{ exercise.image_blob_names[loop.index0] }}</figcaption>
+            </figure>
+
             <div class="buttonbar d-flex justify-content-center">
-              <button type="button" aria-label="select for deletion" aria-pressed="false"
-                      class="btn btn-outline-danger button-delete" data-bs-toggle="button"
-                      data-index="{{ loop.index0 }}">
-                delete
-              </button>
+              <input type="checkbox" aria-label="select for deletion"
+                      class="btn-check button-delete" autocomplete="off"
+                      data-index="{{ loop.index0 }}" id="button-delete-{{ loop.index0 }}">
+              <label for="button-delete-{{ loop.index0 }}" class="btn btn-outline-danger">delete</label>
             </div>
           </div>
         {% endfor %}
@@ -44,8 +47,8 @@
       </div>
     </div>
     <div class="btn-group btn-group-lg">
-      <button class="btn px-3 btn-success m-2 button100px" type="submit" href="#">Ok</button>
-      <button class="btn px-3 btn-light p-1 m-2" id="form-reset" type="reset" href="#">Reset</button>
+      <button class="btn px-3 btn-success p-1 m-2 button100px" type="submit" href="#">Ok</button>
+      <button class="btn px-3 btn-light p-1 m-2 button100px" id="form-reset" type="reset" href="#">Reset</button>
       <a class="btn btn-light p-1 m-2 button100px" href="{{ url_for('exercises.view_all_exercises') }}">Cancel</a>
     </div>
   </form>
@@ -53,7 +56,8 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="model-body">
-          <button type="button" class="position-absolute btn-close p-3 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="position-absolute btn-close p-3 end-0" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
           <img id="modal-target" class="img-fluid">
         </div>
         <div class="modal-footer">

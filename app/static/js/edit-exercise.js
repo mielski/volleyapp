@@ -70,29 +70,11 @@ function updateImageDisplay() {
 
 function resetDeleteButtons() {
   // resets the delete buttons and their images
-  deleteButtons.removeClass("active");
+  deleteButtons.prop("checked", false);
   imgDivs = deleteButtons.parent().parent();
   imgDivs.removeClass("image-delete");
 
 }
-function putImagesToExercise(event){
-      let formDataImage = new FormData($("form")[0]);
-      let exerciseId = $("#submit").data("exercise-id")
-      formDataImage.append('images', input[0].files[0]); // Assuming fileInput is your file input element
-      $.ajax({
-        url: `/api/exercises/${exerciseId}/images`,
-        type: "PUT",
-        data: formDataImage,
-        processData: false,
-        contentType: false,
-        success: function (response) {
-          console.log('Image uploaded successfully:', response);
-        },
-        error: function (xhr, status, error) {
-          console.error('Error uploading image:', error);
-        }
-      })
-    }
 
 $(function () {
 
@@ -100,8 +82,6 @@ $(function () {
   // style the elements for deleting existing images
   let thumpnailImages = $("img").css({"cursor": "pointer"})
   let myModal = new bootstrap.Modal(document.getElementById('modal'), {})
-  const modalImageContainer = $(".modal-body")
-  const modelCloseButton = $(modalImageContainer.firstChild);
 
   thumpnailImages.click( function() {
     // adds responsiveness to images to show in lightbox
@@ -111,10 +91,11 @@ $(function () {
 
   })
 
+  // create gray out effect for images selected for deletion via the delete button
   deleteButtons.click( function() {
     const imgDiv = $(this).parent().parent();
-    const buttonIsActive = $(this).hasClass("active");
-    console.log(buttonIsActive);
+    const buttonIsActive = $(this).prop("checked");
+    console.log("button " + $(this)[0].id + " is active: " + buttonIsActive);
     buttonIsActive ? imgDiv.addClass("image-delete") : imgDiv.removeClass("image-delete");
   })
 
