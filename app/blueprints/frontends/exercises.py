@@ -46,7 +46,9 @@ def edit_exercise(_id):
 
     if form.validate_on_submit():
         # ran when post method is successful -> update data about exercise from form data
-        print(form.data)
+        print(request.form)
+        # this is the current expression: ('delete_images', '0'), ('delete_images', '1')
+
         exercise = ExerciseModel(**form.data)
         exercise_dict = exercise.model_dump(by_alias=True)
         exercise_dict.pop("_id")

@@ -30,15 +30,15 @@ function returnFileSize(number) {
 }
 function updateImageDisplay() {
   // updates the image preview display based on the images selected in the #new_inputs file input
-    const preview = $(".preview");
-    const input = $("#new_images");
-    preview.empty()
+  const preview = $(".preview");
+  const input = $("#new_images_field");
+  preview.empty()
 
 
-  const curFiles = input[0].files;
+  const curFiles = input.length ? input[0].files : [];
   if (curFiles.length === 0) {
     const para = $("<p>");
-    para.text = "No files currently selected for upload";
+    para.text("No files currently selected for upload");
     preview.append(para);
   } else {
 
@@ -46,8 +46,8 @@ function updateImageDisplay() {
       if (validFileType(file)) {
         preview.append($(
             `<div class="col col-3"><img src="${URL.createObjectURL(file)}" class="img-thumbnail">
-            <p>File name ${file.name}, file size ${returnFileSize(file.size)}.</p>
-            </div>`))
+              <p>File name ${file.name}, file size ${returnFileSize(file.size)}.</p>
+              </div>`))
       } else {
         preview.append($(`<div class="col col-3"><p>File name ${file.name}: Not a valid file type. Update your selection.</p>`))
       }
@@ -55,12 +55,22 @@ function updateImageDisplay() {
   }
 }
 
+function toggleImageWithDelete(deleteButton) {
+    const deleteButtonJQ = $(deleteButton)
+    const imgDiv = deleteButtonJQ.parent().parent();
+    const buttonIsActive = deleteButtonJQ.prop("checked");
+    console.log("button " + deleteButton.id + " is active: " + buttonIsActive);
+    buttonIsActive ? imgDiv.addClass("image-delete") : imgDiv.removeClass("image-delete");
+}
+
+
 function resetDeleteButtons() {
   // resets the delete buttons and their images
   deleteButtons.prop("checked", false);
-  imgDivs = deleteButtons.parent().parent();
-  imgDivs.removeClass("image-delete");
-
+  deleteButtons.each(function(index, element) {
+    toggleImageWithDelete(element)
+      }
+  )
 }
 
 $(function () {
@@ -79,11 +89,8 @@ $(function () {
   })
 
   // create gray out effect for images selected for deletion via the delete button
-  deleteButtons.click( function() {
-    const imgDiv = $(this).parent().parent();
-    const buttonIsActive = $(this).prop("checked");
-    console.log("button " + $(this)[0].id + " is active: " + buttonIsActive);
-    buttonIsActive ? imgDiv.addClass("image-delete") : imgDiv.removeClass("image-delete");
+  deleteButtons.click( function(event) {
+    toggleImageWithDelete(event.currentTarget);
   })
 
   // ensure that reset also resets the delete buttons and the image display
