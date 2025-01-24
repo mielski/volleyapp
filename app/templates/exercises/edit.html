@@ -22,6 +22,7 @@
     {{ render_form_row([form.difficulty_level, form.duration, form.skill_focus]) }}
     <div class="row mt-3 m-2">
       <label class="text-black">image control</label>
+      <input type="hidden" name="blobs_to_delete">
       <div class="row border rounded-2 p-2 w-100">
         {% for blob_url in exercise.image_blob_urls %}
           <div class="col-3 d-flex flex-column">
@@ -33,8 +34,7 @@
             <div class="buttonbar d-flex justify-content-center">
               <input type="checkbox" aria-label="select for deletion"
                       class="btn-check button-delete" autocomplete="off"
-                      name="delete_images" value="{{ loop.index0 }}"
-                      data-index="{{ loop.index0 }}" id="button-delete-{{ loop.index0 }}">
+                      data-filename="{{ exercise.image_blob_names[loop.index0] }}" id="button-delete-{{ loop.index0 }}">
               <label for="button-delete-{{ loop.index0 }}" class="btn btn-outline-danger">delete</label>
             </div>
           </div>

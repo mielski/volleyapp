@@ -14,7 +14,7 @@ const fileTypes = [
 ];
 
 const deleteButtons = $(".button-delete")
-
+const formElBlobsToDelete = $("input[name='blobs_to_delete']")
 function validFileType(file) {
   return fileTypes.includes(file.type);
 }
@@ -59,7 +59,6 @@ function toggleImageWithDelete(deleteButton) {
     const deleteButtonJQ = $(deleteButton)
     const imgDiv = deleteButtonJQ.parent().parent();
     const buttonIsActive = deleteButtonJQ.prop("checked");
-    console.log("button " + deleteButton.id + " is active: " + buttonIsActive);
     buttonIsActive ? imgDiv.addClass("image-delete") : imgDiv.removeClass("image-delete");
 }
 
@@ -101,4 +100,17 @@ $(function () {
     resetDeleteButtons();
   })
   $("#new_images_field").change(updateImageDisplay)
+
+  $("button[type='submit']").click(function () {
+    // ensure the selected images for deletion are set to the hidden form element 'blobs_to_delete'
+    const selectedBlobFileNames = [];
+    deleteButtons.each(function (index, element) {
+      let elementJq = $(element);
+      if (elementJq.prop("checked") === true) {
+        selectedBlobFileNames.push(elementJq.data("filename"));
+      }
+    })
+    formElBlobsToDelete.val(selectedBlobFileNames.toString());
+    console.log(formElBlobsToDelete.val());
+  })
 })
