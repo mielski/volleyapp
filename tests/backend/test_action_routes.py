@@ -10,10 +10,6 @@ import pytest
 from dotenv import load_dotenv
 from pymongo.synchronous.collection import Collection
 
-import app.blueprints.frontends.trainings
-import database_operations
-from blueprints.backends.exercises_api import create_exercise
-from flask import current_app
 
 from blueprints.backends.actions_api import ActionModel, ActionType
 from models import TrainingModel
@@ -51,7 +47,7 @@ def client(app_dict):
 
     yield client
 
-    database_operations.delete_all()
+    database_operations.clear_mongo_db()
 
 @pytest.fixture()
 def item_ids(app_dict):
