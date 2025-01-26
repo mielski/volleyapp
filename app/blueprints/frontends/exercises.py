@@ -1,3 +1,4 @@
+import logging
 from typing import cast
 
 from azure.storage.blob import ContentSettings
@@ -11,6 +12,7 @@ exercises_bp = Blueprint('exercises', __name__, template_folder="templates")
 
 app = cast(MyTrainingsApp, current_app)
 
+logger = logging.getLogger(__name__)
 
 def get_exercise_data(_id) -> dict:
     """Loads exercise dictionary from database returns abort if the id cannot be found.
@@ -42,16 +44,13 @@ def view_exercise(_id):
 
 @exercises_bp.route('/exercises/<string:_id>/edit', methods=["GET", "POST"])
 def edit_exercise(_id):
-
+    """endpoint for form to edit an exercise and add/remove images."""
     form = VolleyballExerciseForm()
 
     if form.validate_on_submit():
 
-        # create the exercise model
-        exercise = ExerciseModel(**form.data)
-
-        # update the files
-        # 1) remove the files selected for deletion
+        # 1 - do actions with input about blob images
+        # 1a ) remove indicated images via blobs_to_delete
         blobs_to_remove = request.form["blobs_to_delete"]
         if blobs_to_remove != "":
             blobs_to_remove = blobs_to_remove.split(",")
@@ -61,23 +60,25 @@ def edit_exercise(_id):
                 # exercise.image_blob_names.remove(filename)
                 app.db.exercises.update_one({"_id": _id}, {"$pull": {"image_blob_names": blobname}})
 
-        # 2) append new files
+        # 1b) add new images set via the new_images widget
         filelist = request.files.getlist("new_images")
         if filelist != [""]:
 
-            print(f"got {len(filelist)} files")
+            logger.info(f"got {len(filelist)} files")
             for file_ in filelist:
                 file_data = file_.read()
                 mime_type = file_.mimetype
                 blobname = file_.filename
                 if blobname == "":
                     continue
-                print(f"storing blob {blobname} to storage")
+                logger.info(f"storing blob {blobname} to storage")
                 app.blob_container.upload_blob(name=blobname, data=file_data,
                                                content_settings=ContentSettings(content_type=mime_type))
                 app.db.exercises.update_one({"_id": _id}, {"$push": {"image_blob_names": blobname}})
 
-        exercise_dict = exercise.model_dump(by_alias=True, exclude=["id", "image_blob_names"])
+        # 2) load the exercise data from the remaining form and update db.
+        exercise = ExerciseModel(**form.data)
+        exercise_dict = exercise.model_dump(by_alias=True, exclude={"id", "image_blob_names"})
         app.db.exercises.update_one({"_id": _id}, {"$set": exercise_dict})
         flash("succes!")
         return redirect(url_for("exercises.view_all_exercises"))

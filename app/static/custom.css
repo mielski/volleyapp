@@ -28,9 +28,7 @@ form.title:hover {
 }
 
 body {
-
     font-size: 1rem;
-
 }
 
 .card-nav {
@@ -72,6 +70,7 @@ body {
 }
 
 .image-delete img {
+    /*used to indicate images that are marked for deletion*/
     filter: grayscale(1) opacity(0.5);
 
 }
