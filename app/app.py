@@ -3,6 +3,8 @@ import os
 from logging import basicConfig, INFO, getLogger
 from pathlib import Path
 
+import flask
+import flask_login
 from azure.storage.blob import BlobServiceClient
 from dotenv import load_dotenv
 from flask import render_template, request
@@ -15,6 +17,7 @@ from app.training_app import MyTrainingsApp
 from app.blueprints.backends.exercises_api import exercises_api_bp
 from app.blueprints.backends.actions_api import actions_api_bp
 from app.storage import BlobStorageUrlBuilder
+from app.forms import LoginForm
 from models import ExerciseModel
 
 CONTAINERNAME = "volleyimages"
@@ -22,33 +25,15 @@ CONTAINERNAME = "volleyimages"
 basicConfig(level=INFO)
 
 logger = getLogger(__name__)
-class LocalStorageClient:
-
-    def __init__(self, storage_dir: str | Path):
-        """
-
-        :param storage_dir: path towards which to store the data
-        """
-
-        self.storage_dir = Path(storage_dir).absolute()
-        if not os.path.exists(self.storage_dir):
-            os.mkdir(self.storage_dir)
-
-    def upload_blob(self, filename, data):
-
-        path = self.storage_dir / filename
-        with open(path, "wb") as fid:
-            fid.write(data)
-        logger.info(f"file written to {path}")
-
-    def download_blob(self, filename):
-
-        return open(self.storage_dir / filename, "rb")
 
 
 def b64encode(data):
     return base64.b64encode(data).decode('utf-8')
 
+
+class User(flask_login.UserMixin):
+
+    pass
 
 
 def create_app():
@@ -62,15 +47,14 @@ def create_app():
     app.db.exercises = app.db['exercises']
     app.filelist = {} # temporary
 
-    if os.getenv("STORAGE_CONNECTION_STRING") and not os.getenv("LOCAL_STORAGE") == "TRUE":
+    if os.getenv("STORAGE_CONNECTION_STRING"):
         storage_client = BlobServiceClient.from_connection_string(os.getenv("STORAGE_CONNECTION_STRING"))
         app.blob_container = storage_client.get_container_client(CONTAINERNAME)
         app.blob_url_builder = BlobStorageUrlBuilder(storage_client, CONTAINERNAME)
-
     else:
-        logger.info("no storage account defined -> using local")
-        app.blob_container = LocalStorageClient(Path(__file__).parent / "static/img")
-
+        logger.warning("no blob service connected, loading of images disabled")
+        app.blob_container = None
+        app.blob_url_builder = None
 
     # Register frontend blueprints
     app.register_blueprint(trainings_bp)
@@ -83,6 +67,47 @@ def create_app():
     bootstrap = Bootstrap5(app)
     app.jinja_env.filters['b64encode'] = b64encode
 
+    login_manager = flask_login.LoginManager()
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def user_loader(email):
+        if email != os.getenv("AUTH_EMAIL"):
+            return
+
+        user = User()
+        user.id = email
+        return user
+
+    @login_manager.request_loader
+    def request_loader(request):
+        email = request.form.get('email')
+        if email  != os.getenv("AUTH_EMAIL"):
+            return
+
+        user = User()
+        user.id = email
+        return user
+
+    @app.route('/login', methods=['GET', 'POST'])
+    def login():
+        if flask.request.method == 'GET':
+            return '''
+                   <form action='login' method='POST'>
+                    <input type='text' name='email' id='email' placeholder='email'/>
+                    <input type='password' name='password' id='password' placeholder='password'/>
+                    <input type='submit' name='submit'/>
+                   </form>
+                   '''
+
+        email = flask.request.form['email']
+        if email in users and flask.request.form['password'] == users[email]['password']:
+            user = User()
+            user.id = email
+            flask_login.login_user(user)
+            return flask.redirect(flask.url_for('protected'))
+
+        return 'Bad login'
     @app.route('/')
     def index():  # immediate redirect to view
 
@@ -95,23 +120,13 @@ def create_app():
     def testpage():
         """page used during development"""
 
-        # _id = app.db.exercises.find_one({"_id": 'test_exercise_1'})
-        _id = 'test_exercise_1'
-        exercise = ExerciseModel(**app.db.exercises.find_one({"_id": _id}))
+        form = LoginForm()
 
-        exercise.image_blob_urls = [app.blob_url_builder.get_url(image) for image in exercise.image_blob_names]
-        if request.method == "POST":
-            print(list(request.form.values()))
-            print(list(request.form.items()))
-            print(request.data)
+        if form.validate_on_submit():
+            email = form.email
+            pwd = form.password
 
-            if filelist := request.files.getlist("image_uploads"):
-                for file_ in filelist:
-                    print(f"got {len(filelist)} files")
-                    file_data = file_.read()
-                    mime_type = file_.mimetype
-                    print(f"storing file to blob storage")
-                    app.filelist[file_.filename] = (file_data, mime_type)
-
-        return render_template("testpage.html", exercise=exercise, filelist=app.filelist)
+            if email == os.getenv("AUTH_EMAIL") and pwd == os.getenv("AUTH_PWD"):
+                login_manager.
+        return render_template("testpage.html",form=form)
     return app

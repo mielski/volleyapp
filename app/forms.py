@@ -2,9 +2,10 @@ import datetime
 from enum import Enum
 
 import flask_wtf
+import wtforms
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, TextAreaField, SelectField, \
     IntegerField, FieldList, SelectMultipleField, URLField, DateTimeLocalField, MultipleFileField
-from wtforms.validators import DataRequired, Length, NumberRange, Optional, URL
+from wtforms.validators import DataRequired, Length, NumberRange, Optional, URL, Email
 
 from .models import TrainingModel, ExerciseModel, Skills, DifficultyLevel
 
@@ -137,3 +138,10 @@ class VolleyballExerciseForm(flask_wtf.FlaskForm):
             image_uris=exercise.image_blob_urls,
             tags=exercise.tags
         )
+
+
+class LoginForm(flask_wtf.FlaskForm):
+
+    email = StringField("email", validators=(DataRequired(), Email()))
+    password = PasswordField("password", validators=(DataRequired(), Length(6, message="password must be at least 6 characters")))
+    submit = SubmitField("submit")
