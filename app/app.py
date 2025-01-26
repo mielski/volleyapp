@@ -1,4 +1,5 @@
 import base64
+import datetime
 import os
 from logging import basicConfig, INFO, getLogger
 from pathlib import Path
@@ -7,8 +8,9 @@ import flask
 import flask_login
 from azure.storage.blob import BlobServiceClient
 from dotenv import load_dotenv
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
 from flask_bootstrap import Bootstrap5
+from flask_login import current_user
 from pymongo import MongoClient
 
 from app.blueprints.frontends.trainings import trainings_bp
@@ -101,13 +103,24 @@ def create_app():
                    '''
 
         email = flask.request.form['email']
-        if email in users and flask.request.form['password'] == users[email]['password']:
-            user = User()
-            user.id = email
-            flask_login.login_user(user)
-            return flask.redirect(flask.url_for('protected'))
 
         return 'Bad login'
+
+    @app.route("/logout")
+    def logout():
+
+        if current_user.is_authenticated:
+
+            flask_login.logout_user()
+            flask.flash("logout successfully")
+
+        if next := request.args.get("next"):
+            print("next parameter found: ", next)
+            return redirect(next)
+        else:
+            return redirect(url_for("index"))
+
+
     @app.route('/')
     def index():  # immediate redirect to view
 
@@ -123,10 +136,15 @@ def create_app():
         form = LoginForm()
 
         if form.validate_on_submit():
-            email = form.email
-            pwd = form.password
+            email = form.email.data
+            pwd = form.password.data
 
             if email == os.getenv("AUTH_EMAIL") and pwd == os.getenv("AUTH_PWD"):
-                login_manager.
+                user = User()
+                user.id = email
+                flask_login.login_user(user, remember=True, duration=datetime.timedelta(minutes=15))
+            else:
+                flask.flash("login failed", "warning")
+
         return render_template("testpage.html",form=form)
     return app

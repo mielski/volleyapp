@@ -142,6 +142,6 @@ class VolleyballExerciseForm(flask_wtf.FlaskForm):
 
 class LoginForm(flask_wtf.FlaskForm):
 
-    email = StringField("email", validators=(DataRequired(), Email()))
+    email = StringField("email", validators=(DataRequired(), ))
     password = PasswordField("password", validators=(DataRequired(), Length(6, message="password must be at least 6 characters")))
     submit = SubmitField("submit")
