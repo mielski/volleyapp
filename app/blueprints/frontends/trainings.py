@@ -5,6 +5,7 @@ These endpoints rely on the trainings templates.
 """
 from typing import cast
 
+import flask_login
 from flask import Blueprint, current_app, render_template, abort, url_for, redirect, flash
 
 from app.forms import TrainingFormDetailed, TrainingForm
@@ -60,6 +61,7 @@ def training_details_view(_id):
 
 
 @trainings_bp.route("/training/<string:_id>/edit", methods=["GET", "POST", "DELETE"])
+@flask_login.login_required
 def training_details_edit(_id):
     """endpoint to edit the training details in a well formatted html."""
 
@@ -84,6 +86,7 @@ def training_details_edit(_id):
 
 
 @trainings_bp.route("/training/<string:_id>/delete", methods=["POST"])
+@flask_login.login_required
 def training_details_delete(_id):
     """endpoint to delete the training."""
 
@@ -98,6 +101,7 @@ def training_details_delete(_id):
 
 
 @trainings_bp.route('/trainings/new', methods=["GET", "POST"])
+@flask_login.login_required
 def create_training():
     """raises a form to create a new training"""
     form = TrainingForm()

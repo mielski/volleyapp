@@ -12,6 +12,7 @@ from flask import render_template, request, redirect, url_for
 from flask_bootstrap import Bootstrap5
 from flask_login import current_user
 from pymongo import MongoClient
+from urllib3.util import parse_url
 
 from app.blueprints.frontends.trainings import trainings_bp
 from app.blueprints.frontends.exercises import exercises_bp
@@ -93,18 +94,27 @@ def create_app():
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
-        if flask.request.method == 'GET':
-            return '''
-                   <form action='login' method='POST'>
-                    <input type='text' name='email' id='email' placeholder='email'/>
-                    <input type='password' name='password' id='password' placeholder='password'/>
-                    <input type='submit' name='submit'/>
-                   </form>
-                   '''
 
-        email = flask.request.form['email']
+        form = LoginForm()
 
-        return 'Bad login'
+        if form.validate_on_submit():
+            email = form.email.data
+            pwd = form.password.data
+
+            if email == os.getenv("AUTH_EMAIL") and pwd == os.getenv("AUTH_PWD"):
+                user = User()
+                user.id = email
+                flask_login.login_user(user, remember=True, duration=datetime.timedelta(minutes=15))
+                if redirect_url := request.args.get("next"):
+                    parsed_url = parse_url(redirect_url)
+                    if parsed_url.netloc == request.host:
+                        return redirect(redirect_url)
+
+                return redirect(url_for("index"))
+            else:
+                flask.flash("login failed", "warning")
+
+        return render_template("testpage.html", form=form)
 
     @app.route("/logout")
     def logout():

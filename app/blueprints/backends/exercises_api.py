@@ -1,6 +1,7 @@
 from typing import cast
 from http import HTTPStatus
 
+import flask_login
 from flask import abort, Blueprint, current_app, jsonify, make_response, request
 from pydantic import ValidationError
 
@@ -88,6 +89,7 @@ def get_exercise(_id):
 
 
 @exercises_api_bp.delete("/<string:_id>/")
+@flask_login.login_required
 def delete_exercise(_id):
     result = app.db.exercises.delete_one({"_id": _id})
     if result.deleted_count == 0:

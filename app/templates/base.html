@@ -51,6 +51,24 @@
                                 target="_blank">Bootstrap Documentation</a></li>
         </li>
       </ul>
+
+    </div>
+    <div class="nav">
+      <ul class="navbar-nav">
+        {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <a href="{{ url_for("logout", next=request.url) }}" class="nav-link">
+              <i class="fa-solid fa-user mr-2" style="color: limegreen"></i>Logout
+            </a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a href="{{ url_for("login", next=request.url) }}" class="nav-link">
+              <i class="fa-solid fa-user mr-2" style="color: darkgray"></i>Login
+            </a>
+          </li>
+        {% endif %}
+      </ul>
     </div>
   </div>
 </nav>

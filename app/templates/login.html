@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
+{% from 'macros/blocks.html' import render_exercise %}
+{% block content %}
+
+
+  {{ render_form(form) }}
+  {% if current_user.is_authenticated %}
+    Hi {{ current_user.name }}!
+    <a type="button" href="{{ url_for("logout", next=request.url) }}" aria-label="button that calls for logout api and returns to page">logout</a>
+  {% endif %}
+
+{% endblock %}
