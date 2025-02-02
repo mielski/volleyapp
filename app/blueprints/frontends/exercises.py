@@ -1,13 +1,13 @@
 import logging
 from typing import cast
 
-import flask_login
 from azure.storage.blob import ContentSettings
-from flask import abort, Blueprint, current_app, redirect, url_for, render_template, request, session, flash
+from flask import abort, Blueprint, current_app, redirect, url_for, render_template, request, flash
 
 from app.forms import VolleyballExerciseForm
 from app.models import ExerciseModel
 from app.training_app import MyTrainingsApp
+from app.auth import login_required
 
 exercises_bp = Blueprint('exercises', __name__, template_folder="templates")
 
@@ -45,7 +45,7 @@ def view_exercise(_id):
 
 
 @exercises_bp.route('/exercises/<string:_id>/edit', methods=["GET", "POST"])
-@flask_login.login_required
+@login_required
 def edit_exercise(_id):
     """endpoint for form to edit an exercise and add/remove images."""
     form = VolleyballExerciseForm()
@@ -94,7 +94,7 @@ def edit_exercise(_id):
         return render_template('exercises/edit.html', exercise=exercise, form=form)
 
 @exercises_bp.route('/exercises/new_exercise', methods=["GET", "POST"])
-@flask_login.login_required
+@login_required
 def new_exercise():
     """Creates a new exercise and adds it to the database on form submit."""
 
@@ -110,5 +110,4 @@ def new_exercise():
 
     else:
         return render_template('exercises/new.html', exercise=None, form=form, title="new exercise")
-
 

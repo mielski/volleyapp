@@ -8,7 +8,7 @@ import flask
 import flask_login
 from azure.storage.blob import BlobServiceClient
 from dotenv import load_dotenv
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, jsonify
 from flask_bootstrap import Bootstrap5
 from flask_login import current_user
 from pymongo import MongoClient
@@ -92,6 +92,19 @@ def create_app():
         user.id = email
         return user
 
+    @login_manager.unauthorized_handler
+    def unauthorized_handler():
+        """send on login on unauthorized request"""
+
+        response = jsonify(
+            {"status": 401,
+             "error": "unauthorized",
+             "message": "login required",
+             "call": f"{request.url}"
+             }
+        )
+        return redirect(url_for('login', next=request.url),)
+
     @app.route('/login', methods=['GET', 'POST'])
     def login():
 
@@ -118,17 +131,37 @@ def create_app():
 
     @app.route("/logout")
     def logout():
-
+        """logs out user. On next page uses the following rules:
+        - if redirect is not given, to go index
+        - if ridirect is given but is protected endpoint, go to index
+        - otherwise, to go redirect."""
         if current_user.is_authenticated:
 
             flask_login.logout_user()
             flask.flash("logout successfully")
 
-        if next := request.args.get("next"):
-            print("next parameter found: ", next)
-            return redirect(next)
-        else:
+        # check whether to use redirect
+        redirect_url = request.args.get("next")
+        if not redirect_url:
             return redirect(url_for("index"))
+
+        # check if redirect is protected
+        parsed_redirect = parse_url(redirect_url)
+        adapter = app.url_map.bind('')
+        try:
+            endpoint, args = adapter.match(parsed_redirect.path)
+            view_func = app.view_functions[endpoint]
+            if hasattr(view_func, 'login_required'):
+                logger.debug("redirect endpoint is protected -> redirect to index")
+                return redirect(url_for("index"))
+            else:
+                return redirect(redirect_url)
+                logger.debug("redirect url is public -> go to url")
+
+        except Exception as e:
+            logger.info("exception while matching redirect url with url map")
+            logger.info(e)
+        return redirect(url_for('index'))
 
 
     @app.route('/')
@@ -158,3 +191,4 @@ def create_app():
 
         return render_template("testpage.html",form=form)
     return app
+
