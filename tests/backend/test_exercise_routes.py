@@ -8,8 +8,10 @@ from pprint import pprint
 
 import pytest
 from dotenv import load_dotenv
+from flask import url_for
 from pymongo.synchronous.collection import Collection
 
+import reset_test_data
 
 load_dotenv()
 from app import create_app
@@ -24,7 +26,8 @@ def app_dict():
     # create app with test settings
     app = create_app()
     app.config.update({
-        "TESTING": True
+        "TESTING": True,
+        "LOGIN_DISABLED": True,
     })
 
     with app.app_context():
@@ -37,14 +40,14 @@ def client(app_dict):
 
     app = app_dict['app']
     client = app.test_client()
-
-    database_operations.add_some_exercises()
-    database_operations.add_some_trainings()
-    database_operations.add_exercises_to_first_training()
+    reset_test_data.clear_mongo_db()
+    reset_test_data.add_some_exercises()
+    reset_test_data.add_some_trainings()
+    reset_test_data.add_exercises_to_first_training()
 
     yield client
 
-    database_operations.clear_mongo_db()
+    reset_test_data.clear_mongo_db()
 
 @pytest.fixture()
 def item_ids(app_dict):
@@ -99,3 +102,17 @@ def test_delete_exercise(client, item_ids):
     assert response.status_code == HTTPStatus.OK
     assert response.json["message"] == "Exercise deleted successfully."
 
+def test_delete_exercise_unauthorized(client, item_ids, app_dict, monkeypatch):
+
+    app = app_dict["app"]
+    monkeypatch.setitem(app.config, "LOGIN_DISABLED", False)
+    exercise_id = item_ids['exercises'][0]
+    response = client.delete(f"/api/exercises/{exercise_id}/", headers={"Content-Type": "Application/json"})
+
+    with app.test_request_context():
+        url = url_for("exercises_api.delete_exercise", _id=exercise_id, _external=True)
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
+    assert response.json == {"status": 401,
+                             "message": "login required",
+                             "error": "unauthorized",
+                             "call": url}

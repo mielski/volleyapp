@@ -96,14 +96,20 @@ def create_app():
     def unauthorized_handler():
         """send on login on unauthorized request"""
 
-        response = jsonify(
-            {"status": 401,
-             "error": "unauthorized",
-             "message": "login required",
-             "call": f"{request.url}"
-             }
-        )
-        return redirect(url_for('login', next=request.url),)
+        if request.blueprint.endswith("api"):
+            # response for backend requests
+            response = jsonify(
+                {"status": 401,
+                 "error": "unauthorized",
+                 "message": "login required",
+                 "call": f"{request.url}"
+                 }
+            )
+            response.status_code = 401
+            return response
+        else:
+            # response for frontend requests
+            return redirect(url_for('login', next=request.url),)
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
