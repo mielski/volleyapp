@@ -4,7 +4,8 @@ from datetime import date, datetime
 from enum import Enum
 from typing import Optional, List, Dict
 
-from pydantic import BaseModel, Field, conint, PositiveInt, HttpUrl, field_serializer, FileUrl, AnyHttpUrl
+from pydantic import BaseModel, Field, conint, PositiveInt, HttpUrl, field_serializer, FileUrl, AnyHttpUrl, \
+    model_validator
 from pydantic_core import Url
 
 
@@ -59,7 +60,7 @@ class ExerciseModel(BaseModel):
     approach: str = Field(default="", title="Approach of how the exercise is conducted", examples=[
         ["player 1 passes to 2, 2 sets to 3, 3 spikes the ball over the net"]])
     difficulty_level: DifficultyLevel
-    duration: conint(ge=0)  # Duration in seconds, must be non-negative
+    duration: conint(ge=0) = Field(default=None, title="duration of the exercise in minutes")
     skill_focus: List[Skills] = Field(default_factory=lambda: list(), title="List of volleybal skills that is included",
                                       )  # List of skills
     intensity: Optional[int] = Field(default=None, title="Intensity of the training (1=low, 5=high)")
@@ -86,6 +87,20 @@ class ExerciseModel(BaseModel):
 
     def new(cls):
         """create a new, empty training that meets the minimum requirements"""
+
+class ExerciseLink(BaseModel):
+    """fields for linking an exercise to a training. Part of the training model"""
+    ref_id: str = Field(default=None, title="id of the exercide reference in the database")
+    model: ExerciseModel = Field(None, title="exercise model details if no link is provided")
+
+    @model_validator(mode="after")
+    def check_xor_ref_model(self):
+        """tests that either the ref_id or model is defined."""
+        if self.ref_id is None and self.model is None:
+            raise AttributeError("Either model or ref_id should be defined, but both are None")
+
+        if self.ref_id is not None and self.model is not None:
+            raise AttributeError("Both exercise model and exercise link given, please provide either of them.")
 
 
 if __name__ == '__main__':
