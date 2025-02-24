@@ -19,8 +19,14 @@ app = cast(MyTrainingsApp, current_app)
 
 def load_exercises(training: TrainingModel) -> list[ExerciseModel]:
 
-    exercise_ids = training.exercises
-    exercises = [ExerciseModel(**app.db.exercises.find_one(id_)) for id_ in exercise_ids]
+    exercises = []
+    print(training)
+    for ref in training.exercises:
+        if ref.ref_id is not None:
+            exercise = ExerciseModel(**app.db.exercises.find_one(ref.ref_id))
+        else:
+            exercise = ref.model
+        exercises.append(exercise)
     for exercise in exercises:
         exercise.image_blob_urls = [app.blob_url_builder.get_url(name) for name in exercise.image_blob_names]
     return exercises

@@ -9,23 +9,6 @@ from pydantic import BaseModel, Field, conint, PositiveInt, HttpUrl, field_seria
 from pydantic_core import Url
 
 
-class TrainingModel(BaseModel):
-    """Model for the data about a training"""
-    id: str = Field(default_factory=lambda: uuid.uuid4().hex, alias="_id")
-    title: str
-    description: str = ""
-    training_date: datetime = Field(alias="date", title="Date of the training")
-    creation_date: datetime = Field(default_factory=lambda: datetime.now(),
-                                    title="Datestamp when the training was created.")
-    rating: conint(ge=0, le=5) = Field(default=None,
-                                       description="The rating of the training between 0 and 5 (optional)")
-    tags: List[str] = Field(default_factory=lambda: list(),
-                            description="Tags to identify patterns in the training, for example 'defence'"
-                            )
-    exercises: List[str] = Field(default_factory=lambda: list(),
-                                 description="list of exercises in the training, ordered by appearance")
-    notes: str = Field(default="", description="Notes/comments made during / after the training")
-    attendees: Optional[PositiveInt] = Field(default=None, description="Number of players that attends the training")
 
 
 # Enum for difficulty levels
@@ -93,14 +76,34 @@ class ExerciseLink(BaseModel):
     ref_id: str = Field(default=None, title="id of the exercide reference in the database")
     model: ExerciseModel = Field(None, title="exercise model details if no link is provided")
 
-    @model_validator(mode="after")
-    def check_xor_ref_model(self):
-        """tests that either the ref_id or model is defined."""
-        if self.ref_id is None and self.model is None:
-            raise AttributeError("Either model or ref_id should be defined, but both are None")
+    # @model_validator(mode="after")
+    # def check_xor_ref_model(self):
+    #     """tests that either the ref_id or model is defined."""
+    #     if self.ref_id is None and self.model is None:
+    #         raise AttributeError("Either model or ref_id should be defined, but both are None")
+    #
+    #     if self.ref_id is not None and self.model is not None:
+    #         raise AttributeError("Both exercise model and exercise link given, please provide either of them.")
 
-        if self.ref_id is not None and self.model is not None:
-            raise AttributeError("Both exercise model and exercise link given, please provide either of them.")
+
+class TrainingModel(BaseModel):
+    """Model for the data about a training"""
+    id: str = Field(default_factory=lambda: uuid.uuid4().hex, alias="_id")
+    title: str
+    description: str = ""
+    training_date: datetime = Field(alias="date", title="Date of the training")
+    creation_date: datetime = Field(default_factory=lambda: datetime.now(),
+                                    title="Datestamp when the training was created.")
+    rating: conint(ge=0, le=5) = Field(default=None,
+                                       description="The rating of the training between 0 and 5 (optional)")
+    tags: List[str] = Field(default_factory=lambda: list(),
+                            description="Tags to identify patterns in the training, for example 'defence'"
+                            )
+    exercises: List[ExerciseLink] = Field(default_factory=lambda: list(),
+                                   description="list of training exercises in order appearance. Links to exercises"
+                                               "or actual exercise information")
+    notes: str = Field(default="", description="Notes/comments made during / after the training")
+    attendees: Optional[PositiveInt] = Field(default=None, description="Number of players that attends the training")
 
 
 if __name__ == '__main__':

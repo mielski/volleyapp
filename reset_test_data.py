@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from pymongo import MongoClient
 from pymongo.synchronous.collection import Collection
 
+import models
 from app.app import CONTAINERNAME
 from app.models import TrainingModel, ExerciseModel, DifficultyLevel, Skills
 
@@ -134,8 +135,8 @@ def add_exercises_to_first_training():
     """add exercise 0 and 2 to the first training"""
     training_id = trainings.find_one()["_id"]
     exercises_ids = [v["_id"] for v in exercises.find({}, {"_id": 1})]
-    ids_to_add = exercises_ids[0], exercises_ids[2]
-    trainings.update_one({"_id": training_id}, {"$push": {"exercises": {"$each": ids_to_add}}})
+    refs_to_add = {"ref_id": exercises_ids[0]}, {"ref_id": exercises_ids[2]}
+    trainings.update_one({"_id": training_id}, {"$push": {"exercises": {"$each": refs_to_add}}})
 
 
 if __name__ == '__main__':
