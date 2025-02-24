@@ -15,8 +15,6 @@ class TestExerciseLink:
 
     def test_model_vanilla(self):
 
-        ex_link = models.ExerciseLink(ref_id="3")
-
         assert self.by_ref.ref_id == "3"
         assert self.by_ref.model is None
 
