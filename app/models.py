@@ -71,6 +71,7 @@ class ExerciseModel(BaseModel):
     def new(cls):
         """create a new, empty training that meets the minimum requirements"""
 
+
 class ExerciseLink(BaseModel):
     """fields for linking an exercise to a training. Part of the training model"""
     ref_id: str = Field(default=None, title="id of the exercide reference in the database")

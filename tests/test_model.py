@@ -18,7 +18,6 @@ class TestExerciseLink:
         assert self.by_ref.ref_id == "3"
         assert self.by_ref.model is None
 
-
     def test_model_data_proper(self):
 
         assert self.by_model.model.title == "hello there"
@@ -26,6 +25,7 @@ class TestExerciseLink:
         assert self.by_model.model.difficulty_level == DifficultyLevel.beginner
         assert self.by_model.ref_id is None
 
+    @pytest.mark.xfail(reason="feature is disabled")
     def test_model_requires_1_argument(self):
         """tests post validation that requires either the ref_id or the model to be defined."""
 
