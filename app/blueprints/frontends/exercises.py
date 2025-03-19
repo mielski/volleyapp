@@ -106,7 +106,7 @@ def new_exercise():
         # add exercise to database
         exercise_dict = exercise.model_dump(by_alias=True)
         app.db.exercises.insert_one(exercise_dict)
-        return redirect(url_for("view_all_exercises"))
+        return redirect(url_for("exercises.view_all_exercises"))
 
     else:
         return render_template('exercises/new.html', exercise=None, form=form, title="new exercise")
